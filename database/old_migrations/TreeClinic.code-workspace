@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../api"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "TreeClinicDashboard",
+		"git.ignoreLimitWarning": true
+	}
+}
