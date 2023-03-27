@@ -34,6 +34,7 @@
                                 <th>ID</th>
                                 <th class="wd-15p border-bottom-0">NAME</th>
                                 <th class="wd-15p border-bottom-0">PHONE NUMBER</th>
+                                <th class="wd-15p border-bottom-0">PROFILE PICTURE</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -43,6 +44,7 @@
                                     <td>{{$t->id}}</td>
                                     <td>{{$t->agent_name}}</td>
                                     <td>{{$t->phone}}</td>
+                                    <td><img src="{{ $t->profile_pic }}" height="70"></td>
 
                                     <td><a href="{{route('edit.agents', $t->id)}}" class="btn btn-light">Edit</a>
 

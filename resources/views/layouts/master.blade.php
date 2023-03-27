@@ -13,7 +13,7 @@
     <title>{{config('app.name')}} | {{session('title')}}</title>
 
     <!--Favicon -->
-    <link rel="icon" href="/images/favicon.png" type="image/x-icon"/>
+    <link rel="icon" href="/images/Landville_logo.png" type="image/x-icon"/>
 
     <!-- Bootstrap css -->
     <link href="../../assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet"/>
@@ -50,6 +50,13 @@
     <link href="../../assets/plugins/select2/select2.min.css" rel="stylesheet"/>
     <link href="../../assets/plugins/accordion/accordion.css" rel="stylesheet"/>
 
+    <style>
+        .image-size {
+            height: 200px; /* set the desired height */
+            object-fit: cover; /* set the object-fit property to cover */
+        }
+    </style>
+
 </head>
 
 <body class="app sidebar-mini light-mode default-sidebar">
@@ -66,7 +73,7 @@
             <div class="app-sidebar__logo">
                 <a class="header-brand" href="{{route('dashboard')}}">
                     {{--<h3 style="color: #5eb95d; margin-top: 10px;">{{config('app.name')}}</h3>--}}
-                    <h4 style="color: white; margin-top: 10px; background: #5eb95d; padding-top: 12px; padding-bottom:12px; border-radius: 6px">{{config('app.name')}}</h4>
+                    <h4 style="color: white; margin-top: 10px; background: #34779A; padding-top: 12px; padding-bottom:12px; border-radius: 6px">{{config('app.name')}}</h4>
                              
                 </a>
             </div>
@@ -262,6 +269,8 @@
         <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
     </svg>
 </a>
+
+
 
 <!-- Jquery js-->
 <script src="../../assets/js/vendors/jquery-3.5.1.min.js"></script>

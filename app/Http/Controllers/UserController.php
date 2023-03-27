@@ -149,7 +149,7 @@ class UserController extends Controller
         foreach ($request->file('images') as $image) {
             $str = Str::random(30);
             $uniqueFileName = $str . "." . $image->getClientOriginalExtension();
-            $url = url(Storage::url($image->storeAs('/users', $uniqueFileName, 'public')));
+            $url = url(Storage::url($image->storeAs('/images', $uniqueFileName, 'public')));
             array_push($array, $url);
         }
         $user->images = $array;

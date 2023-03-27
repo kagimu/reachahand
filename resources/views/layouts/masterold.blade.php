@@ -25,7 +25,7 @@
     <script src="https://cdn.tiny.cloud/1/xx5mptqws192s7zami0i0p3642ok8ft2lyb0cazd3k2fthd0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
     <!--Favicon -->
-    <link rel="icon" href="/assets/images/brand/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="/assets/images/brand/Landville_logo.png" type="image/x-icon"/>
 
     <!-- Bootstrap css -->
     <link href="/assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />

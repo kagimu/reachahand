@@ -15,6 +15,7 @@
 
 .accordion .card:not(:first-of-type) .card-header:first-child {
     border-radius: 0;
+    f
 }
 
 .accordion .card:first-of-type {
@@ -27021,17 +27022,17 @@ button.bg-secondary:focus {
 }
 
 .bg-success {
-    background-color: #2dce89 !important;
+    background-color: #45a76e !important;
 }
 
 a.bg-success:hover,
 a.bg-success:focus {
-    background-color: #15ca7c !important;
+    background-color: #45a76e !important;
 }
 
 button.bg-success:hover,
 button.bg-success:focus {
-    background-color: #15ca7c !important;
+    background-color: #45a76e !important;
 }
 
 .bg-info {
@@ -31870,7 +31871,7 @@ a.text-dark:focus {
     }
 
     abbr[title]::after {
-        content: " ("attr(title) ")";
+        content: " (" attr(title) ")";
     }
 
     pre {

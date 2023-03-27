@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent;
 use Illuminate\Http\Request;
+use Storage;
 
 class AgentController extends Controller
 {
@@ -28,7 +29,6 @@ class AgentController extends Controller
         $request->validate([
             'agent_name' => 'required',
             'phone' => 'required',
-//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
 
@@ -44,11 +44,12 @@ class AgentController extends Controller
         $agent->agent_name = $request->agent_name;
         $agent->phone = $request->phone;
 
-        if ($request->hasFile('profile_pic')) {
-            $imageName = time() . "." . $request->image->extension();
+       if ($request->hasFile('profile_pic')) {
+            $imageName = time() . "." . $request->profile_pic->extension();
             $request->profile_pic->storeAs('public/agents', $imageName);
             $agent->profile_pic = url(Storage::url('agents/' . $imageName));
         }
+
 
         $agent->save();
 

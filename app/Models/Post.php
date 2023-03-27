@@ -22,10 +22,13 @@ class Post extends Model
         'type',
         'quick_true',
         'saved',
+        'videos'
     ];
 
+
     protected $casts = [
-        'images' => 'array'
+        'images' => 'array',
+        'videos' => 'array'
     ];
 
     protected $appends = ['owner'];
@@ -38,6 +41,10 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function comments()
     {
@@ -51,4 +58,15 @@ class Post extends Model
 
         return false;
     }
+    
+        public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+        public function isLikedByLoggedInUser()
+    {
+        return $this->likes->contains('user_id', auth()->user()->id);
+    }
 }
+    

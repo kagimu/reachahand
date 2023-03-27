@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <div class="d-flex no-block align-items-center">
                         <div>
-                            <h6 class="text-white">Clients</h6>
+                            <h6 class="text-white">Users</h6>
                             <h2 class="text-white m-0 font-weight-bold">{{$clients}}</h2>
                         </div>
                         <div class="ml-auto">
@@ -47,7 +47,7 @@
                 <div class="card-body">
                     <div class="d-flex no-block align-items-center">
                         <div>
-                            <h6 class="text-white">Support Users</h6>
+                            <h6 class="text-white">Support</h6>
                             <h2 class="text-white m-0 font-weight-bold">{{$support}}</h2>
                         </div>
                         <div class="ml-auto">

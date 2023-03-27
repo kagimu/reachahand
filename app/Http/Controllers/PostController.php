@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Storage;
 use Str;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class PostController extends Controller
     public function index()
     {
         session(['title' => 'Posts']);
-        $posts = Post::withCount('comments')->orderBy('id', 'desc')->get();
+        $posts = Post::with('category')->withCount('comments')->orderBy('id', 'desc')->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -39,7 +40,7 @@ class PostController extends Controller
     public function getPostsByCategory(Request $request)
     {
 
-        $posts = Post::with('user')->withCount('comments')->where('category_id', $request->category_id)->orderBy('created_at', 'desc')->take(15)->get();
+        $posts = Post::with('user')->withCount('comments')->where('category_id', $request->category_name)->orderBy('created_at')->take(15)->get();
         return response()->json($posts);
     }
 
@@ -53,7 +54,9 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+         $post = new Post;
+        return view('posts.create', compact('categories', 'post'));
     }
 
 
@@ -61,45 +64,54 @@ class PostController extends Controller
     {
         $request->validate([
             'category_id' => 'required',
+            'name' => 'required',
             'desc' => 'required',
             'price' => 'required',
             'location' => 'required',
             'size' => 'required',
             'status' => 'required',
             'type' => 'required',
-            'user_id' => 'required',
         ]);
 
         $post = new Post;
         $post->category_id = $request->category_id;
+        $post->name = $request->name;
         $post->desc = $request->desc;
         $post->price = $request->price;
         $post->location = $request->location;
         $post->size = $request->size;
         $post->status = $request->status;
         $post->type = $request->type;
-        $post->user_id = $request->user_id;
-        $post->created = $request->created;
-        $post->date = $this->utils->getCurrentDate();
-        $post->user_id = Auth::id();
-        $array = array();
-        if (is_array($request->file('images')) || is_object($request->file('images'))) {
-            foreach ($request->file('images') as $image) {
-                $str = Str::random(30);
-                $uniqueFileName = $str . "." . $image->getClientOriginalExtension();
-                $url = url(Storage::url($image->storeAs('/posts', $uniqueFileName, 'public')));
-                array_push($array, $url);
+        $post->user_id = auth()->user()->id;
+
+        if (is_array($request->file('videos')) || is_object($request->file('videos'))) {
+            $videoUrls = array();
+            foreach ($request->file('videos') as $video) {
+                $videoName = time() . "_" . $video->getClientOriginalName();
+                $video->storeAs('public/videos', $videoName);
+                $url = Storage::url('categories/' . $videoName);
+                array_push($videoUrls, $url);
             }
+            $post->videos = $videoUrls;
         }
 
-        $post->images = $array;
+        if (is_array($request->file('images')) || is_object($request->file('images'))) {
+            $imageUrls = array();
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . "_" . $image->getClientOriginalName();
+                $image->storeAs('public/images', $imageName);
+                $url = Storage::url('images/' . $imageName);
+                array_push($imageUrls, $url);
+            }
+            $post->images = $imageUrls;
+        }
+
         $post->save();
 
-        // FCM notification
-        $this->fcm->newPost(Auth::user());
-
-        return response()->json($post);
+        return redirect()->route('index.posts')
+            ->with('success', 'Post has been created successfully.');
     }
+
 
 
     public function show($id)
@@ -111,75 +123,73 @@ class PostController extends Controller
     }
 
 
-    public function edit(Post $post)
+        public function edit($id)
     {
-        return view('posts.edit', compact('post'));
+        $categories = Category::all();
+        $post = Post::find($id);
+        return view('posts.edit', compact('categories', 'post'));
     }
 
 
-    public function update(Request $request, Post $post, $id)
-    {
 
-        $request->validate([
-            'token' => 'required',
-            'category_id' => 'required',
-            'desc' => 'required',
-            'price' => 'required',
-            'location' => 'required',
-            'size' => 'required',
-            'status' => 'required',
-            'type' => 'required',
+            public function update(Request $request, $id)
+        {
+            $request->validate([
+                'category_id' => 'required',
+                'name' => 'required',
+                'desc' => 'required',
+                'price' => 'required',
+                'location' => 'required',
+                'size' => 'required',
+                'status' => 'required',
+                'type' => 'required',
+            ]);
 
-        ]);
+            $post = Post::find($id);
+            $post->category_id = $request->category_id;
+            $post->name = $request->name;
+            $post->desc = $request->desc;
+            $post->price = $request->price;
+            $post->location = $request->location;
+            $post->size = $request->size;
+            $post->status = $request->status;
+            $post->type = $request->type;
 
-        $post = Post::find($id);
-        $post->token = $request->token;
-        $post->category_id = $request->category_id;
-        $post->desc = $request->desc;
-        $post->price = $request->price;
-        $post->location = $request->location;
-        $post->size = $request->size;
-        $post->status = $request->status;
-        $post->type = $request->type;
-        $array = array();
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $str = Str::random(30);
-                $uniqueFileName = $str . "." . $image->getClientOriginalExtension();
-                $url = url(Storage::url($image->storeAs('/posts', $uniqueFileName, 'public')));
-                array_push($array, $url);
-
+            if (is_array($request->file('videos')) || is_object($request->file('videos'))) {
+                $videoUrls = array();
+                foreach ($request->file('videos') as $video) {
+                    $videoName = time() . "_" . $video->getClientOriginalName();
+                    $video->storeAs('public/categories', $videoName);
+                    $url = Storage::url('categories/' . $videoName);
+                    array_push($videoUrls, $url);
+                }
+                $post->videos = $videoUrls;
             }
+
+            if (is_array($request->file('images')) || is_object($request->file('images'))) {
+                $imageUrls = array();
+                foreach ($request->file('images') as $image) {
+                    $imageName = time() . "_" . $image->getClientOriginalName();
+                    $image->storeAs('public/images', $imageName);
+                    $url = Storage::url('images/' . $imageName);
+                    array_push($imageUrls, $url);
+                }
+                $post->images = $imageUrls;
+            }
+
+            $post->save();
+
+            return redirect()->route('index.posts')
+                ->with('success', 'Post has been updated successfully.');
         }
 
-        $post->images = $array;
-        $post->save();
-        return response()->json($post);
-
-
-        return redirect()->route('posts.index')
-            ->with('success', 'Post has been created successfully.');
-    }
-
-
-    public function destroy(Post $post, $id)
-    {
-        if (Post::where('id', $id)->exists()) {
-            $post = Post::find($id);
+    public function destroy(Post $post)
+        {
             $post->delete();
 
-            return response()->json([
-                "message" => "records deleted"
-            ], 202);
-        } else {
-            return response()->json([
-                "message" => "Student not found"
-            ], 404);
+            return redirect()->route('posts.index')->with('success', 'Post has been deleted successfully');
         }
 
-        return redirect()->route('posts.index')
-            ->with('success', 'Post has been deleted successfully');
-    }
 
     public function search(Request $request)
     {
@@ -195,27 +205,30 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        $post->desc = $request->caption;
-//        $post->category_id = $request->category_id;
+        $post->desc = $request->desc;
+        $post->category_id = $request->category_id;
         $post->save();
 
         return response()->json($post);
     }
 
+    public function confirmDelete($id){
+        session(['title' => 'Confirm Delete']);
+        $post = Post::find($id);
+        return view('posts.confirm_delete', compact('post'));
+    }
+
     public function deletePost(Request $request)
     {
-        $post = Post::find($request->post_id);
-        $comments = Comment::where('post_id', $post->id)->get();
-        foreach ($comments as $c) {
-            $replies = Reply::where('comment_id', $c->id)->get();
-            foreach ($replies as $r) {
-                $r->delete();
-            }
-            $c->delete();
-        }
-        $post->delete();
+        $post = Post::find($request->id);
 
-        return response()->json(['code' => 1, 'message' => 'Post deleted successfully']);
+        if ($post) {
+            $post->delete();
+            return redirect()->route('posts.index')->with('success', 'Post has been deleted successfully');
+        } else {
+            return redirect()->route('posts.index')->with('error', 'Post not found');
+        }
+
     }
 
 }

@@ -22,31 +22,38 @@
                     </div>
                 @endif
                 <div class="card-body">
-                    <form action="{{ route('store.agents') }}" method="POST" enctype="multipart/form-data">
+                   <form method="POST" action="{{ route('store.agents') }}" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" value="{{$agent->id}}" name="agent_id">
-                        <div class="">
-                            <div class="form-group">
-                                <label for="agent_name" class="form-label">Agent Name:</label>
-                                <input type="text" name="agent_name" class="form-control" placeholder="Enter agent name" value="{{$agent->agent_name}}">
-                                @error('agent_name')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="phone" class="form-label">Agent Contact:</label>
-                                <input type="text" name="phone" class="form-control" placeholder="Enter agent name" value="{{$agent->agent_name}}">
-                                @error('phone')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            {{--<div class="form-group">--}}
-                                {{--<strong>Logo:</strong>--}}
-                                {{--<input type="file" name="logo" class="form-control" placeholder="Logo">--}}
-                            {{--</div>--}}
+                        <div class="form-group">
+                            <label for="agent_name">Agent Name</label>
+                            <input type="text" class="form-control @error('agent_name') is-invalid @enderror" id="agent_name" name="agent_name" value="{{ old('agent_name') }}" required>
+                            @error('agent_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary mt-4 mb-0">Submit</button>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" required>
+                            @error('phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="profile_pic">Profile Picture</label>
+                            <input type="file" class="form-control-file @error('profile_pic') is-invalid @enderror" id="profile_pic" name="profile_pic">
+                            @error('profile_pic')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+
                 </div>
             </div>
         </div>

@@ -18,20 +18,21 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
             $table->text('desc');
+            $table->text('name')->nullable();
             $table->json('images');
-            $table->unsignedInteger('price');
-            $table->json('main_image');
-            $table->string('quick_true');
+            $table->json('videos')->nullable();
+            $table->string('price');
+            $table->json('main_image')->nullable();
+            $table->string('quick_true')->nullable();
             $table->text('location');
-            $table->string('saved');
-            $table->unsignedInteger('size');
+            $table->string('saved')->nullable();
+            $table->string('size');
             $table->text('status');
             $table->text('type');
-            $table->string('created');
-            $table->string('date');
-            $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->timestamps();
+            
         });
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PostLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,11 +45,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts', [PostController::class, 'index'])->name('index.posts');
     Route::get('/posts/create', [PostController::class, 'create'])->name('create.posts');
     Route::post('/posts/store', [PostController::class, 'store'])->name('store.posts');
+    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('edit.posts');
     Route::get('/posts/show/{id}', [PostController::class, 'show'])->name('show.posts');
+    Route::put('/posts/{post}', [PostController::class, 'update'])->name('update.posts');
+    Route::get('/posts/confirm-delete/{id}', [PostController::class, 'confirmDelete'])->name('confirm_delete.POSTS');
+    Route::get('/posts/deletePost', [PostController::class, 'deletePost'])->name('deletePost.posts');
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/settings', [SettingsController::class, 'index'])->name('index.settings');
     Route::post('/settings/store', [SettingsController::class, 'store'])->name('store.settings');
+
+    Route::post('/posts/{post}/likes', [PostLikeController::class, 'store'])->name('posts.likes');
+    Route::delete('/posts/{post}/likes', [PostLikeController::class, 'destroy'])->name('posts.likes');
 
 });
 
@@ -56,7 +64,7 @@ Route::middleware('auth')->group(function () {
 
 //ROUTES FOR POST CONTROLLER
 
-
+Route::get('/index', [PostController::class,'create'])->name('posts.index');
 Route::get('/create', [PostController::class,'create'])->name('posts.create');
 
 Route::post('/store', [PostController::class,'store'])->name('posts.store');
@@ -79,6 +87,7 @@ Route::post('/posts/{post}/comments ', [CommentController::class, 'store']);
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 
 

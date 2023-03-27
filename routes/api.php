@@ -52,6 +52,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/updateFCMToken', [UserController::class, 'updateFCMToken']);
 
+    Route::post('/posts/{id}/like', [\App\Http\Controllers\PostLikeController::class, 'store']);
 
     Route::get('/posts', [PostController::class, 'getPosts']);
 
