@@ -309,7 +309,19 @@
 <script src="../../assets/plugins/datatable/dataTables.responsive.min.js"></script>
 <script src="../../assets/plugins/datatable/responsive.bootstrap4.min.js"></script>
 <script src="../../assets/js/datatables.js"></script>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var elements = document.querySelectorAll(".limited-desc");
+        elements.forEach(function(element) {
+            var originalText = element.textContent;
+            var maxLength = 20; // Adjust this to your desired character limit
+            if (originalText.length > maxLength) {
+                var truncatedText = originalText.substr(0, maxLength) + "…"; // Adding an ellipsis
+                element.textContent = truncatedText;
+            }
+        });
+    });
+</script>
 <!-- Select2 js -->
 <script src="../../assets/plugins/select2/select2.full.min.js"></script>
 

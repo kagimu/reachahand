@@ -53,7 +53,9 @@
                                     <td>{{$post->user->first_name}} {{$post->user->last_name}}</td>
                                     <td>{{$post->name}}</td>
                                     <td>{{$post->category->category_name}}</td>
-                                    <td>{{$post->desc}}</td>
+                                    <td>
+		  			  <span class="limited-desc">{{ $post->desc }}</span>
+                                    </td>
                                     <td>{{$post->location}}</td>
                                     <td>{{$post->price}}</td>
                                     <td>{{$post->type}}</td>
@@ -63,7 +65,7 @@
                                                 @if(is_string($image))
                                                 <img src="{{ asset($image) }}" alt="Image" width="10" height='10'>
                                                 @endif
-                                            @endforeach
+x                                            @endforeach
                                         
 
                                     </td>
