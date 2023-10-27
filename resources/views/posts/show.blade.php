@@ -15,7 +15,7 @@
             <div class="col-lg-7">
                 <div class="box-widget widget-user">
                     <div class="widget-user-image d-sm-flex">
-                        <img alt="avatar" class="rounded-circle border p-0" src="{{$post->user->avatar}}">
+                        <img alt="avatar" class="rounded-circle border p-0" src="{{$post->profile_pic}}" height="70" width="70">
                         <div class="ml-sm-4 mt-4">
                             <h4 class="pro-user-username mb-3 font-weight-bold">{{$post->user->last_name}} @if($post->user->role == 'support') <span class="badge badge-warning">Support</span> @endif</h4>
                             <div class="d-flex mb-1">
@@ -52,9 +52,22 @@
                     <div class="main-profile-bio mb-4">
                         {{$post->status}}
                     </div>
-                     <h5 class="font-weight-bold mt-4">Property Type</h5>
+                    
+                      <h5 class="font-weight-bold mt-4">Bedrooms</h5>
                     <div class="main-profile-bio mb-4">
-                        {{$post->type}}
+                        {{$post->bedroom}}
+                    </div>
+                      <h5 class="font-weight-bold mt-4">bathrooms</h5>
+                    <div class="main-profile-bio mb-4">
+                        {{$post->bathroom}}
+                    </div>
+                      <h5 class="font-weight-bold mt-4">Name of the Landlord</h5>
+                    <div class="main-profile-bio mb-4">
+                        {{$post->owner}}
+                    </div>
+                      <h5 class="font-weight-bold mt-4">Contact of the Landlord</h5>
+                    <div class="main-profile-bio mb-4">
+                        {{$post->contact}}
                     </div>
                 </div>
             </div>
@@ -74,15 +87,15 @@
                     <!-- Videos -->
                      <h5 class="font-weight-bold mt-4">Videos</h5>
                         <div class="row">
-                            @foreach($post->video as $video)
-                            @if(is_string($video))
+                            
+                           @if (is_string($post->video))
                             <div class="col-6">
                                 <div class="embed-responsive embed-responsive-16by9 mb-3">
-                                    <iframe class="embed-responsive-item" src="{{ asset('/categories/'. $video) }}" allowfullscreen autoplay="0"></iframe>
+                                    <iframe class="embed-responsive-item" src="{{ asset($post->video) }}" allowfullscreen autoplay="0"></iframe>
                                 </div>
                             </div>
                             @endif
-                            @endforeach
+                            
                         </div>
 
                     <a class="carousel-control-prev" href="#carousel-captions" role="button" data-slide="prev">

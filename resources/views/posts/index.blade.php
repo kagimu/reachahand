@@ -35,14 +35,13 @@
                                 <th class="wd-15p border-bottom-0">USER</th>
                                 <th class="wd-15p border-bottom-0">NAME</th>
                                 <th class="wd-15p border-bottom-0">CATEGORY</th>
-                                <th class="wd-15p border-bottom-0">CAPTION</th>
+                                <th class="wd-15p border-bottom-0">BEDROOMS</th>
+                                <th class="wd-15p border-bottom-0">BATHROOMS</th>
                                 <th class="wd-15p border-bottom-0">LOCATION</th>
                                 <th class="wd-15p border-bottom-0">PRICE</th>
-                                <th class="wd-15p border-bottom-0">PROPERTY TYPE</th>
                                 <th class="wd-15p border-bottom-0">PROPERTY STATUS</th>
-                                <th class="wd-20p border-bottom-0">IMAGE</th>
+                                <th class="wd-20p border-bottom-0">IMAGES</th>
                                 <th class="wd-15p border-bottom-0">DATE</th>
-                               <th class="wd-25p border-bottom-0">COMMENTS</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -53,12 +52,10 @@
                                     <td>{{$post->user->first_name}} {{$post->user->last_name}}</td>
                                     <td>{{$post->name}}</td>
                                     <td>{{$post->category->category_name}}</td>
-                                    <td>
-		  			  <span class="limited-desc">{{ $post->desc }}</span>
-                                    </td>
+                                    <td>{{$post->bedroom}} bedrooms</td>
+                                    <td>{{$post->bathroom}} bathrooms</td>
                                     <td>{{$post->location}}</td>
                                     <td>{{$post->price}}</td>
-                                    <td>{{$post->type}}</td>
                                     <td>{{$post->status}}</td>
                                     <td>
                                             @foreach($post->images ?? [] as $image)
@@ -73,7 +70,7 @@
                                     <td>{{$post->comments_count}}</td>
                                     <td>
                                         <a href="{{route('edit.posts', $post->id)}}" class="btn btn-light mr-2">Edit</a>   
-                                        <a href="{{route('deletePost.posts', $post->id)}}" class="btn btn-light">Delete</a>
+                                        <a href="{{route('confirm_delete.posts', $post->id)}}" class="btn btn-light">Delete</a>
                                     </td>
                                     <td><a href="{{route('show.posts', $post->id)}}" class="btn btn-light">View Property</a></td>
                                 </tr>

@@ -195,9 +195,9 @@
                                 <div class="dropdown profile-dropdown">
                                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
 												<span>
-													<img src="/images/placeholder.png" alt="img"
+													<img src={{Auth::user()->image}} alt="img"
                                                          class="avatar avatar-md brround">
-                                                         <img src="/images/Landville_logo.png" style="height: 60px; width:60px;">
+                                                         <img src="/images/logo.png" class="avatar avatar-sm brround" style="height: 60px; width:60px;">
 												</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow animated">

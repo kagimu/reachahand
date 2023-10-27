@@ -65,6 +65,34 @@
                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="bedroom" class="form-label">Number of bedrooms:</label>
+                        <input type="text" name="bedroom" class="form-control" placeholder="" value="{{ old('bedroom', $post->bedroom) }}">
+                        @error('bedroom')
+                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="bathroom" class="form-label">Number of bathrooms:</label>
+                        <input type="text" name="bathroom" class="form-control" placeholder="" value="{{ old('bathroom', $post->bathroom) }}">
+                        @error('bathroom')
+                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="owner" class="form-label">Name of the landlord:</label>
+                        <input type="text" name="owner" class="form-control" placeholder="" value="{{ old('owner', $post->owner) }}">
+                        @error('owner')
+                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="contact" class="form-label">Contact of the landlord:</label>
+                        <input type="text" name="contact" class="form-control" placeholder="" value="{{ old('contact', $post->contact) }}">
+                        @error('contact')
+                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
+                    </div>
                 <div class="form-group">
                     <label for="status" class="form-label">What do you want to do with the Property?:</label>
                     <select name="status" id="status" class="form-control">
@@ -76,17 +104,6 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="type" class="form-label">What Type of Property is it?:</label>
-                    <select name="type" id="type" class="form-control">
-                        @foreach(['Residential', 'Commercial'] as $type)
-                        <option value="{{ $type }}" {{ $type == $post->type ? 'selected' : '' }}>{{ $type }}</option>
-                        @endforeach
-                    </select>
-                    @error('type')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                    @enderror
-                </div>
 
                 <div class="col-md-10">
                     <label for="images" class="form-label">Update the Images of the Property:</label>
@@ -96,9 +113,9 @@
                     @enderror
                 </div>
                 <div class="col-md-10">
-                    <label for="videos" class="form-label">Update Video:</label>
-                    <input type="file" name="videos[]" id="videos" multiple="multiple" class="form-control"/>
-                    @error('videos')
+                    <label for="video" class="form-label">Update Video:</label>
+                    <input type="file" name="video" id="video" class="form-control"/>
+                    @error('video')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>

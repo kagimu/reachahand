@@ -50,7 +50,7 @@
                                 <img class="mt-2" src="{{$category->image}}" height="150">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-4 mb-0">Submit</button>
+                        <button type="submit" class="btn btn-primary mt-1 mb-0">Submit</button>
                     </form>
                 </div>
             </div>

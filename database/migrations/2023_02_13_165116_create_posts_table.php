@@ -19,11 +19,11 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->text('desc');
             $table->text('name')->nullable();
-	    $table->text('owner')->nullable();
-	    $table->text('contact')->nullable();
-	    $table->text('bedroom')->nullable();
-	    $table->text('bathroom')->nullable();
-            $table->json('images')->nullable();
+            $table->text('owner')->nullable();
+            $table->string('contact');
+            $table->text('bedroom')->nullable();
+            $table->text('bathroom')->nullable();
+            $table->json('images');
             $table->text('video')->nullable();
             $table->string('price');
             $table->text('profile_pic')->nullable();

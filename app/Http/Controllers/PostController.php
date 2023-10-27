@@ -60,26 +60,24 @@ class PostController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'category_id' => 'required',
-            'name' => 'required',
-            'desc' => 'required',
-            'price' => 'required',
-            'location' => 'required',
-            'size' => 'required',
-            'status' => 'required',
-            'type' => 'required',
-            'status' => 'required',
-            'type' => 'required',
-            'contact' => 'required',
-            'owner' => 'required',
-            'profile_pic' => 'required',
-        ]);
+   public function store(Request $request)
+{
+    dd($request->all());
+    $request->validate([
+        'category_id' => 'required',
+        'name' => 'required',
+        'desc' => 'required',
+        'price' => 'required',
+        'location' => 'required',
+        'contact' => 'required',
+        'owner' => 'required',
+       // 'images' => 'required|array|min:4', // Validate that at least 4 images are required
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20480', // Define image file validation rules
+      //  'video' => 'file|mimes:mp4,mov,avi,flv|max:204800', // Define video file validation rules
+    ]);
 
-        $post = new Post;
-        $post->category_id = $request->category_id;
+    $post = new Post;
+     $post->category_id = $request->category_id;
         $post->name = $request->name;
         $post->desc = $request->desc;
         $post->price = $request->price;
@@ -93,36 +91,34 @@ class PostController extends Controller
         $post->owner = $request->owner;
         $post->user_id = auth()->user()->id;
 
-	 if ($request->hasFile('video')) {
-            $videoName = time() . "." . $request->video->extension();
-            $request->video->storeAs('public/video', $videoName);
-            $post->video = url(Storage::url('video/' . $videoName));
-        }
-
-
-
-        if (is_array($request->file('images')) || is_object($request->file('images'))) {
-            $imageUrls = array();
-            foreach ($request->file('images') as $image) {
-                $imageName = time() . "_" . $image->getClientOriginalName();
-                $image->storeAs('public/images', $imageName);
-                $url = Storage::url('images/' . $imageName);
-                array_push($imageUrls, $url);
-            }
-            $post->images = $imageUrls;
-        }
-
-        if ($request->hasFile('profile_pic')) {
-            $imageName = time() . "." . $request->profile_pic->extension();
-            $request->profile_pic->storeAs('public/profile_pic', $imageName);
-            $post->profile_pic = url(Storage::url('profile_pic/' . $imageName));
-        }
-
-        $post->save();
-
-        return redirect()->route('index.posts')
-            ->with('success', 'Post has been created successfully.');
+    if ($request->hasFile('video')) {
+        $videoName = time() . "." . $request->video->extension();
+        $request->video->storeAs('public/videos', $videoName);
+        $post->video = url(Storage::url('videos/' . $videoName));
     }
+
+  if ($request->hasFile('profile_pic')) {
+            $imageName = time() . "." . $request->profile_pic->extension();
+            $request->profile_pic->storeAs('public/profilepics', $imageName);
+            $post->profile_pic = url(Storage::url('profilepics/' . $imageName));
+        }
+
+       if (is_array($request->file('images')) || is_object($request->file('images'))) {
+                $imageUrls = array();
+                foreach ($request->file('images') as $image) {
+                    $imageName = time() . "_" . $image->getClientOriginalName();
+                    $image->storeAs('public/images', $imageName);
+                    $url = Storage::url('images/' . $imageName);
+                    array_push($imageUrls, $url);
+                }
+                $post->images = $imageUrls;
+            }
+
+    $post->save();
+
+    return redirect()->route('index.posts')
+        ->with('success', 'Post has been created successfully.');
+}
 
 
 
@@ -154,7 +150,7 @@ class PostController extends Controller
                 'location' => 'required',
                 'size' => 'required',
                 'status' => 'required',
-                'type' => 'required',
+                
             ]);
 
             $post = Post::find($id);
@@ -167,16 +163,11 @@ class PostController extends Controller
             $post->status = $request->status;
             $post->type = $request->type;
 
-            if (is_array($request->file('videos')) || is_object($request->file('videos'))) {
-                $videoUrls = array();
-                foreach ($request->file('videos') as $video) {
-                    $videoName = time() . "_" . $video->getClientOriginalName();
-                    $video->storeAs('public/categories', $videoName);
-                    $url = Storage::url('categories/' . $videoName);
-                    array_push($videoUrls, $url);
-                }
-                $post->videos = $videoUrls;
-            }
+            if ($request->hasFile('video')) {
+        $videoName = time() . "." . $request->video->extension();
+        $request->video->storeAs('public/videos', $videoName);
+        $post->video = url(Storage::url('videos/' . $videoName));
+    }
 
             if (is_array($request->file('images')) || is_object($request->file('images'))) {
                 $imageUrls = array();

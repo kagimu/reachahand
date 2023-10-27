@@ -41,7 +41,7 @@
                                 <tr>
                                     <td>{{$category->id}}</td>
                                     <td>{{$category->category_name}}</td>
-                                    <td><img src="{{ $category->image }}" height="70"></td>
+                                    <td><img src="{{ $category->image }}" height="70", border-radius='10'></td>
 
                                     <td>
                                         <a href="{{route('edit.categories', $category->id)}}" class="btn btn-light mr-2">Edit</a>   

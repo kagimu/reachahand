@@ -48,8 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('edit.posts');
     Route::get('/posts/show/{id}', [PostController::class, 'show'])->name('show.posts');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('update.posts');
-    Route::get('/posts/confirm-delete/{id}', [PostController::class, 'confirmDelete'])->name('confirm_delete.POSTS');
-    Route::get('/posts/deletePost', [PostController::class, 'deletePost'])->name('deletePost.posts');
+    Route::get('/posts/confirm-delete/{id}', [PostController::class, 'confirmDelete'])->name('confirm_delete.posts');
+    Route::delete('/posts/deletePost/{id}', [PostController::class, 'deletePost'])->name('deletePost.posts');
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/settings', [SettingsController::class, 'index'])->name('index.settings');
