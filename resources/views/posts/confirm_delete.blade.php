@@ -22,8 +22,10 @@
                                        <p class="mb-4 mx-4">Are you sure you would like to delete this Property entirely?</p>
 
                                        @if ($post)
-                                            <form action="{{ route('deletePost.posts', ['id' => $post->id]) }}" method="post">
+                                            <form action="{{ route('deletePost.posts')}}" method="POST">
                                                 @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="id" value="{{$post->id}}">
                                                 <a href="{{ route('index.posts') }}" class="btn btn-primary pd-x-25">Cancel</a>
                                                 <button class="btn btn-danger pd-x-25" type="submit">Yes, Delete</button>
                                             </form>
