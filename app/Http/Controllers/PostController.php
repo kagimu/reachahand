@@ -62,7 +62,7 @@ class PostController extends Controller
 
    public function store(Request $request)
 {
-    dd($request->all());
+   
     $request->validate([
         'category_id' => 'required',
         'name' => 'required',
