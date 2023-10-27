@@ -32,7 +32,7 @@ class CreatePostsTable extends Migration
             $table->string('saved')->nullable();
             $table->string('size');
             $table->text('status');
-            $table->text('type');
+            $table->text('type')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
