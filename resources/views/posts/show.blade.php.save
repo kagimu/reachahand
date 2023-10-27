@@ -73,16 +73,14 @@
 
                     <!-- Videos -->
                      <h5 class="font-weight-bold mt-4">Videos</h5>
-                        <div class="row">
-                            @foreach($post->video as $video)
-                            @if(is_string($video))
-                            <div class="col-6">
-                                <div class="embed-responsive embed-responsive-16by9 mb-3">
-                                    <iframe class="embed-responsive-item" src="{{ asset('/categories/'. $video) }}" allowfullscreen autoplay="0"></iframe>
-                                </div>
-                            </div>
-                            @endif
-                            @endforeach
+                        <div class=row>
+			@if ($post->video && is_string($post->video))
+                          <div class="col-6">
+                           <div class="embed-responsive embed-responsive-16by9">
+             			 <iframe class="embed-responsive-item" src="{{ $post->video }}"></iframe>
+       			 </div>
+    </div>
+@endif
                         </div>
 
                     <a class="carousel-control-prev" href="#carousel-captions" role="button" data-slide="prev">

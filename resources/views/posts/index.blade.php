@@ -61,11 +61,11 @@
                                     <td>{{$post->type}}</td>
                                     <td>{{$post->status}}</td>
                                     <td>
-                                            @foreach($post->images as $image)
+                                            @foreach($post->images ?? [] as $image)
                                                 @if(is_string($image))
                                                 <img src="{{ asset($image) }}" alt="Image" width="10" height='10'>
                                                 @endif
-x                                            @endforeach
+                                            @endforeach
                                         
 
                                     </td>

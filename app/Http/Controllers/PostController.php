@@ -71,6 +71,11 @@ class PostController extends Controller
             'size' => 'required',
             'status' => 'required',
             'type' => 'required',
+            'status' => 'required',
+            'type' => 'required',
+            'contact' => 'required',
+            'owner' => 'required',
+            'profile_pic' => 'required',
         ]);
 
         $post = new Post;
@@ -82,18 +87,19 @@ class PostController extends Controller
         $post->size = $request->size;
         $post->status = $request->status;
         $post->type = $request->type;
+        $post->bedroom = $request->bedroom;
+        $post->bathroom = $request->bathroom;
+        $post->contact = $request->contact;
+        $post->owner = $request->owner;
         $post->user_id = auth()->user()->id;
 
-        if (is_array($request->file('videos')) || is_object($request->file('videos'))) {
-            $videoUrls = array();
-            foreach ($request->file('videos') as $video) {
-                $videoName = time() . "_" . $video->getClientOriginalName();
-                $video->storeAs('public/videos', $videoName);
-                $url = Storage::url('categories/' . $videoName);
-                array_push($videoUrls, $url);
-            }
-            $post->videos = $videoUrls;
+	 if ($request->hasFile('video')) {
+            $videoName = time() . "." . $request->video->extension();
+            $request->video->storeAs('public/video', $videoName);
+            $post->video = url(Storage::url('video/' . $videoName));
         }
+
+
 
         if (is_array($request->file('images')) || is_object($request->file('images'))) {
             $imageUrls = array();
@@ -104,6 +110,12 @@ class PostController extends Controller
                 array_push($imageUrls, $url);
             }
             $post->images = $imageUrls;
+        }
+
+        if ($request->hasFile('profile_pic')) {
+            $imageName = time() . "." . $request->profile_pic->extension();
+            $request->profile_pic->storeAs('public/profile_pic', $imageName);
+            $post->profile_pic = url(Storage::url('profile_pic/' . $imageName));
         }
 
         $post->save();
