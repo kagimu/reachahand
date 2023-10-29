@@ -24,9 +24,9 @@ class CreatePostsTable extends Migration
             $table->text('bedroom')->nullable();
             $table->text('bathroom')->nullable();
             $table->json('images');
-            $table->text('video')->nullable();
+            $table->string('video')->nullable();
             $table->string('price');
-            $table->text('profile_pic')->nullable();
+            $table->string('profile_pic')->nullable();
             $table->string('quick_true')->nullable();
             $table->text('location');
             $table->string('saved')->nullable();

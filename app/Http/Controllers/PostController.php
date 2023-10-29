@@ -62,7 +62,6 @@ class PostController extends Controller
 
    public function store(Request $request)
 {
-   
     $request->validate([
         'category_id' => 'required',
         'name' => 'required',
@@ -71,25 +70,26 @@ class PostController extends Controller
         'location' => 'required',
         'contact' => 'required',
         'owner' => 'required',
-       // 'images' => 'required|array|min:4', // Validate that at least 4 images are required
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20480', // Define image file validation rules
-      //  'video' => 'file|mimes:mp4,mov,avi,flv|max:204800', // Define video file validation rules
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
     ]);
 
+    // Get the authenticated user
+    $user = auth()->user();
+
     $post = new Post;
-     $post->category_id = $request->category_id;
-        $post->name = $request->name;
-        $post->desc = $request->desc;
-        $post->price = $request->price;
-        $post->location = $request->location;
-        $post->size = $request->size;
-        $post->status = $request->status;
-        $post->type = $request->type;
-        $post->bedroom = $request->bedroom;
-        $post->bathroom = $request->bathroom;
-        $post->contact = $request->contact;
-        $post->owner = $request->owner;
-        $post->user_id = auth()->user()->id;
+    $post->category_id = $request->category_id;
+    $post->name = $request->name;
+    $post->desc = $request->desc;
+    $post->price = $request->price;
+    $post->location = $request->location;
+    $post->size = $request->size;
+    $post->status = $request->status;
+    $post->type = $request->type;
+    $post->bedroom = $request->bedroom;
+    $post->bathroom = $request->bathroom;
+    $post->contact = $request->contact;
+    $post->owner = $request->owner;
+    $post->user_id = $user->id; // Associate the post with the user
 
     if ($request->hasFile('video')) {
         $videoName = time() . "." . $request->video->extension();
@@ -97,27 +97,33 @@ class PostController extends Controller
         $post->video = url(Storage::url('videos/' . $videoName));
     }
 
-  if ($request->hasFile('profile_pic')) {
-            $imageName = time() . "." . $request->profile_pic->extension();
-            $request->profile_pic->storeAs('public/profilepics', $imageName);
-            $post->profile_pic = url(Storage::url('profilepics/' . $imageName));
-        }
+    if ($request->hasFile('profile_pic')) {
+        $imageName = time() . "." . $request->profile_pic->extension();
+        $request->profile_pic->storeAs('public/profilepics', $imageName);
+        $post->profile_pic = url(Storage::url('profilepics/' . $imageName));
+    }
 
-       if (is_array($request->file('images')) || is_object($request->file('images'))) {
-                $imageUrls = array();
-                foreach ($request->file('images') as $image) {
-                    $imageName = time() . "_" . $image->getClientOriginalName();
-                    $image->storeAs('public/images', $imageName);
-                    $url = Storage::url('images/' . $imageName);
-                    array_push($imageUrls, $url);
-                }
-                $post->images = $imageUrls;
-            }
+    if (is_array($request->file('images')) || is_object($request->file('images'))) {
+        $imageUrls = array();
+        foreach ($request->file('images') as $image) {
+            $imageName = time() . "_" . $image->getClientOriginalName();
+            $image->storeAs('public/images', $imageName);
+            $url = Storage::url('images/' . $imageName);
+            array_push($imageUrls, $url);
+        }
+        $post->images = $imageUrls;
+    }
 
     $post->save();
 
-    return redirect()->route('index.posts')
-        ->with('success', 'Post has been created successfully.');
+    // Include user information in the JSON response
+    return response()->json([
+        'message' => 'Post has been created successfully',
+        'post' => $post, // Include the created post
+        'user' => $user, // Include user information
+    ], 201);
+}
+
 }
 
 
