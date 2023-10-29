@@ -124,9 +124,6 @@ class PostController extends Controller
     ], 201);
 }
 
-}
-
-
 
     public function show($id)
     {
