@@ -91,27 +91,19 @@ class PostController extends Controller
     $post->owner = $request->owner;
     $post->user_id = $user->id; // Associate the post with the user
 
-    if (!$request->hasFile('video')) {
-    return response()->json(['upload_file_not_found'], 400);
-}
+     if ($request->hasFile('video')) {
+            $video = $request->file('video');
 
-    $file = $request->file('video'); // Get the single file from the request
+            // Generate a unique filename
+            $videoName = time() . '.' . $video->getClientOriginalExtension();
 
-    $allowedfileExtension = ['mp4', 'mov'];
-    $extension = $file->getClientOriginalExtension();
+            // Store the video file in the storage/app/videos directory
+            $request->video->storeAs('public/video', $videoName);
 
-    if (in_array($extension, $allowedfileExtension)) {
-        $path = $file->store('public/videos');
-        $name = $file->getClientOriginalName();
+            // You can save the video path or URL to the database if needed
+            $post->video = url(Storage::url('video/' . $videoName));
 
-        // Create a new Image model instance for the single image and save it
-        $post = new Post();
-        $post->title = $name;
-        $post->path = $path;
-        $post->save(); // Save the single image
-    } else {
-        return response()->json(['invalid_file_format'], 422);
-    }
+        }
 
 
     if ($request->hasFile('profile_pic')) {
@@ -120,37 +112,19 @@ class PostController extends Controller
         $post->profile_pic = url(Storage::url('profilepics/' . $imageName));
     }
 
-     if(!$request->hasFile('images')) {
-        return response()->json(['upload_file_not_found'], 400);
-    }
- 
-    $allowedfileExtension=['pdf','jpg','png'];
-    $files = $request->file('images'); 
-    $errors = [];
- 
-    foreach ($files as $file) {      
- 
-        $extension = $file->getClientOriginalExtension();
- 
-        $check = in_array($extension,$allowedfileExtension);
- 
-        if($check) {
-            foreach($request->fileName as $mediaFiles) {
- 
-                $path = $mediaFiles->store('public/images');
-                $name = $mediaFiles->getClientOriginalName();
-      
-                //store image file into directory and db
-                $post = new Post();
-                $post->title = $name;
-                $post->path = $path; 
-                $post->save();
-                
-            }
-        } else {
-            return response()->json(['invalid_file_format'], 422);
+     if ($request->hasFile('images')) {
+        $images = []; // Create an array to store image URLs
+        foreach ($request->file('images') as $image) {
+            $imageName = time() . '_' . $image->extension();
+            $image->storeAs('public/profilepics', $imageName);
+            $imageURL = url(Storage::url('profilepics/' . $imageName));
+            array_push($images, $imageURL); // Add the image URL to the array
         }
-    }
+        $post->images = $images; // Store all image URLs in the 'images' attribute
+        $post->save();
+       }
+ 
+    
 
     $post->save();
 
