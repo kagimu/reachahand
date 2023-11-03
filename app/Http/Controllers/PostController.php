@@ -91,11 +91,11 @@ class PostController extends Controller
     $post->owner = $request->owner;
     $post->user_id = $user->id; // Associate the post with the user
 
-    if (!$request->hasFile('fileName')) {
+    if (!$request->hasFile('video')) {
     return response()->json(['upload_file_not_found'], 400);
 }
 
-    $file = $request->file('fileName'); // Get the single file from the request
+    $file = $request->file('video'); // Get the single file from the request
 
     $allowedfileExtension = ['mp4', 'mov'];
     $extension = $file->getClientOriginalExtension();
@@ -120,12 +120,12 @@ class PostController extends Controller
         $post->profile_pic = url(Storage::url('profilepics/' . $imageName));
     }
 
-     if(!$request->hasFile('fileName')) {
+     if(!$request->hasFile('images')) {
         return response()->json(['upload_file_not_found'], 400);
     }
  
     $allowedfileExtension=['pdf','jpg','png'];
-    $files = $request->file('fileName'); 
+    $files = $request->file('images'); 
     $errors = [];
  
     foreach ($files as $file) {      
