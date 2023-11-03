@@ -92,18 +92,18 @@ class PostController extends Controller
     $post->user_id = $user->id; // Associate the post with the user
 
      if ($request->hasFile('video')) {
-            $video = $request->file('video');
+    $video = $request->file('video');
 
-            // Generate a unique filename
-            $videoName = time() . '.' . $video->getClientOriginalExtension();
+    // Generate a unique filename
+    $videoName = time() . '.' . $video->getClientOriginalExtension();
 
-            // Store the video file in the storage/app/videos directory
-            $request->video->storeAs('public/video', $videoName);
+    // Store the video file in the storage/app/videos directory
+    $video->storeAs('public/videos', $videoName);
 
-            // You can save the video path or URL to the database if needed
-            $post->video = url(Storage::url('video/' . $videoName));
+    // Store the video path in the "post" object
+    $post->video = $videoName; // You can adjust the path as needed
+}
 
-        }
 
 
     if ($request->hasFile('profile_pic')) {
