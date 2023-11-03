@@ -14,6 +14,11 @@ class Post extends Model
     protected $fillable = [
         'user_id', 
         'category_id',
+        "owner",
+        'contact',
+        'profile_pic',
+        'bedroom',
+        'bathroom',
         'desc',
         'price',
         'location',
@@ -21,14 +26,13 @@ class Post extends Model
         'size',
         'type',
         'quick_true',
-        'saved',
-        'videos'
+        'video'
     ];
 
 
     protected $casts = [
         'images' => 'array',
-        'videos' => 'array'
+        
     ];
 
     protected $appends = ['owner'];
