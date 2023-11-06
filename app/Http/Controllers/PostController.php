@@ -7,6 +7,7 @@ use App\Models\Category;
 use Storage;
 use Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Auth;
 use App\Helpers\Utils;
 use App\Models\Comment;
@@ -62,21 +63,33 @@ class PostController extends Controller
 
    public function store(Request $request)
 {
-    $request->validate([
-        'category_id' => 'required',
+
+    $validator =   Validator::make($request->all(), [
+        'category_id' => 'numeric|required',
         'name' => 'required',
         'desc' => 'required',
-        'price' => 'required',
+        'price' => 'numeric|required',
         'location' => 'required',
         'contact' => 'required',
         'owner' => 'required',
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
+        'images' => 'required|array',
+        'images.*' => 'required|image|mimes:pdf,jpeg,png,jpg,gif|max:20480',
     ]);
 
-    // Get the authenticated user
-    $user = auth()->user();
 
-    $post = new Post;
+    try {
+
+
+        if($validator->fails()){
+            $message =$validator->errors()->all();
+            return response()->json($message, 400);
+        }else{
+
+  // Get the authenticated user
+    $user = auth()->user();
+    // dd($request->owner);
+
+    $post = new Post();
     $post->category_id = $request->category_id;
     $post->name = $request->name;
     $post->desc = $request->desc;
@@ -88,52 +101,55 @@ class PostController extends Controller
     $post->bedroom = $request->bedroom;
     $post->bathroom = $request->bathroom;
     $post->contact = $request->contact;
-    $post->owner = $request->owner;
+    $post->owner = $request->input('owner');
     $post->user_id = $user->id; // Associate the post with the user
 
      if ($request->hasFile('video')) {
-    $video = $request->file('video');
-
-    // Generate a unique filename
-    $videoName = time() . '.' . $video->getClientOriginalExtension();
-
-    // Store the video file in the storage/app/videos directory
-    $video->storeAs('public/videos', $videoName);
-
-    // Store the video path in the "post" object
-    $post->video = $videoName; // You can adjust the path as needed
-}
-
+           $videoFile = $request->file('video');
+           $videoExt = $videoFile->getClientOriginalExtension();
+           $videoName = time() . '_'  . $videoExt;
+           $videoPath = $videoFile->storeAs('videos', $videoName, 'public');
+            $post->video = $videoPath;
+    }
 
 
     if ($request->hasFile('profile_pic')) {
-        $imageName = time() . "." . $request->profile_pic->extension();
-        $request->profile_pic->storeAs('public/profilepics', $imageName);
-        $post->profile_pic = url(Storage::url('profilepics/' . $imageName));
+          $imageFile = $request->file('profile_pic');
+          $imageExt = $imageFile->getClientOriginalExtension();
+          $imageName = time() . '_'  . $imageExt;
+          $imagePath = $imageFile->storeAs('images/profile', $imageName, 'public');
+          $post->profile_pic = $imagePath;
     }
 
-     if ($request->hasFile('images')) {
-        $images = []; // Create an array to store image URLs
-        foreach ($request->file('images') as $image) {
-            $imageName = time() . '_' . $image->extension();
-            $image->storeAs('public/profilepics', $imageName);
-            $imageURL = url(Storage::url('profilepics/' . $imageName));
-            array_push($images, $imageURL); // Add the image URL to the array
-        }
-        $post->images = $images; // Store all image URLs in the 'images' attribute
-        $post->save();
-       }
- 
-    
+                    // upload labtest documents 
+                    if ($request->hasFile('images')) {
+                         $images = [];
+                        foreach ($request->file('images') as $index => $file) {
+                            $file_extension = $file->getClientOriginalExtension();
+                            $file_name = time() . '_' . $index . '.' . $file_extension;
+                            $file_path = $file->storeAs('images/landlords', $file_name, 'public');
+                             array_push($images, $file_path);
+                        }
+                         $post->images = $images;
+                    }
 
+                   
     $post->save();
 
     // Include user information in the JSON response
     return response()->json([
         'message' => 'Post has been created successfully',
         'post' => $post, // Include the created post
-        'user' => $user, // Include user information
-    ], 201);
+    ], 200);
+
+}
+
+  
+}catch(\Exception $ex){
+    return response()->json([
+        'message' => $ex->getMessage()
+    ], 400);
+}
 }
 
 
