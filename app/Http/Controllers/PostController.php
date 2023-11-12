@@ -73,7 +73,7 @@ class PostController extends Controller
         'contact' => 'required',
         'owner' => 'required',
         'images' => 'required|array',
-        'images.*' => 'required|image|mimes:pdf,jpeg,png,jpg,gif|max:20480',
+        'images.*' => 'required|image|mimes:pdf,jpeg,png,jpg,gif',
     ]);
 
 
