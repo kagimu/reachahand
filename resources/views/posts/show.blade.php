@@ -15,7 +15,7 @@
             <div class="col-lg-7">
                 <div class="box-widget widget-user">
                     <div class="widget-user-image d-sm-flex">
-                        <img alt="avatar" class="rounded-circle border p-0" src="{{$post->profile_pic}}" height="70" width="70">
+                        <img alt="avatar" class="rounded-circle border p-0" src="{{$post->profile_pic_url}}" height="70" width="70">
                         <div class="ml-sm-4 mt-4">
                             <h4 class="pro-user-username mb-3 font-weight-bold">{{$post->user->last_name}} @if($post->user->role == 'support') <span class="badge badge-warning">Support</span> @endif</h4>
                             <div class="d-flex mb-1">
@@ -78,7 +78,7 @@
                         @foreach($post->images as $image)
                         @if(is_string($image))
                         <div class="col-6 p-6">
-                            <img src="{{ asset( $image) }}" alt="Image" width="300" height="100" padding='20' marginLeft>
+                            <img src="{{ asset('storage/' . $image) }}" alt="Image" width="300" height="100" padding='20' marginLeft>
                         </div>
                         @endif
                         @endforeach
@@ -91,7 +91,10 @@
                            @if (is_string($post->video))
                             <div class="col-6">
                                 <div class="embed-responsive embed-responsive-16by9 mb-3">
-                                    <iframe class="embed-responsive-item" src="{{ asset($post->video) }}" allowfullscreen autoplay="0"></iframe>
+                                    <video class="embed-responsive-item" controls>
+                                        <source class="embed-responsive-item" src="{{ asset('storage/' . $post->video) }}" allowfullscreen autoplay="0">
+                                    </video>
+                                    
                                 </div>
                             </div>
                             @endif

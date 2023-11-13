@@ -60,7 +60,7 @@
                                     <td>
                                             @foreach($post->images ?? [] as $image)
                                                 @if(is_string($image))
-                                                <img src="{{ asset($image) }}" alt="Image" width="10" height='10'>
+                                                <img src="{{ asset('storage/' . $image)  }}" alt="Image" width="10" height='10'>
                                                 @endif
                                             @endforeach
                                         
