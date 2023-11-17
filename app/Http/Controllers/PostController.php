@@ -68,7 +68,6 @@ class PostController extends Controller
         'category_id' => 'numeric|required',
         'name' => 'required',
         'desc' => 'required',
-        'price' => 'numeric|required',
         'location' => 'required',
         'contact' => 'required',
         'owner' => 'required',

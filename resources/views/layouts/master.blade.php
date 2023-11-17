@@ -5,9 +5,9 @@
     <!-- Meta data -->
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
-    <meta content="LandVilleApp" name="description">
+    <meta content="linkup" name="description">
     <meta content="JayP UG Private Technologies" name="author">
-    <meta name="keywords" content="Land, Ville, LandVille, Landville, ville, land"/>
+    <meta name="keywords" content="link, linkup, li, linking, lik, linked"/>
 
     <!-- Title -->
     <title>{{config('app.name')}} | {{session('title')}}</title>
@@ -73,7 +73,7 @@
             <div class="app-sidebar__logo">
                 <a class="header-brand" href="{{route('dashboard')}}">
                     {{--<h3 style="color: #5eb95d; margin-top: 10px;">{{config('app.name')}}</h3>--}}
-                    <h4 style="color: white; margin-top: 10px; background: #34779A; padding-top: 12px; padding-bottom:12px; border-radius: 6px">{{config('app.name')}}</h4>
+                    <h4 style="color: white; margin-top: 10px; background: #00138f; padding-top: 12px; padding-bottom:12px; border-radius: 6px">{{config('app.name')}}</h4>
                              
                 </a>
             </div>
@@ -196,7 +196,7 @@
                                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
 												<span>
 													<img src="{{ Auth::user()->image ? asset(Auth::user()->image) : asset('images/placeholder.png') }}" alt="img" style="height: 55px; width:55px;">
-                                                         <img src="/images/logo.png" class="avatar avatar-sm brround" style="height: 60px; width:60px;">
+                                                         <img src="/images/icon.png" class="avatar avatar-sm brround" style="height: 60px; width:60px;">
 												</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow animated">
