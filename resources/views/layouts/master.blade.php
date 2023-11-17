@@ -13,7 +13,7 @@
     <title>{{config('app.name')}} | {{session('title')}}</title>
 
     <!--Favicon -->
-    <link rel="icon" href="/images/New-icon.png" type="image/x-icon"/>
+    <link rel="icon" href="/images/icon.png" type="image/x-icon"/>
 
     <!-- Bootstrap css -->
     <link href="../../assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet"/>
