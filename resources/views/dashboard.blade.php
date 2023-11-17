@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-6 col-xl-3">
-            <div class="card bg-success">
+            <div class="card bg-yellow">
                 <div class="card-body">
                     <div class="d-flex no-block align-items-center">
                         <div>
@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-6 col-xl-3">
-            <div class="card bg-success">
+            <div class="card bg-pink">
                 <div class="card-body">
                     <div class="d-flex no-block align-items-center">
                         <div>
