@@ -73,7 +73,7 @@
             <div class="app-sidebar__logo">
                 <a class="header-brand" href="{{route('dashboard')}}">
                     {{--<h3 style="color: #5eb95d; margin-top: 10px;">{{config('app.name')}}</h3>--}}
-                    <h4 style="color: white; margin-top: 10px; background: #00138f; padding-top: 12px; padding-bottom:12px; border-radius: 6px">{{config('app.name')}}</h4>
+                    <h4 style="color: white; margin-top: 10px; background: #00138f; padding-top: 12px; padding-bottom:12px; border-radius: 6px">Linkup</h4>
                              
                 </a>
             </div>
