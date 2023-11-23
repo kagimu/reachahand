@@ -17,7 +17,7 @@
                     <div class="widget-user-image d-sm-flex">
                         <img alt="avatar" class="rounded-circle border p-0" src="{{$post->profile_pic_url}}" height="70" width="70">
                         <div class="ml-sm-4 mt-4">
-                            <h4 class="pro-user-username mb-3 font-weight-bold">{{$post->user->last_name}} @if($post->user->role == 'support') <span class="badge badge-warning">Support</span> @endif</h4>
+                            <h4 class="pro-user-username mb-3 font-weight-bold">{{$post->user->name}} @if($post->user->role == 'admin') <span class="badge badge-warning">Admin</span> @endif</h4>
                             <div class="d-flex mb-1">
                                 <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity=".3"></path><path d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"></path></svg>
                                 <div class="h6 mb-0 ml-3 mt-1">The Time Property was Created: {{$post->created_at}}</div>
