@@ -78,7 +78,7 @@
                         @foreach($post->images as $image)
                         @if(is_string($image))
                         <div class="col-6 p-6">
-                            <img src="{{ asset('storage/' . $image) }}" alt="Image" width="300" height="100" padding='20' marginLeft>
+                            <img src="{{ asset('storage/' . $image) }}" alt="Image" width="300" height="300" padding='20'>
                         </div>
                         @endif
                         @endforeach
