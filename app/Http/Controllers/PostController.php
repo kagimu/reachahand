@@ -77,8 +77,6 @@ class PostController extends Controller
 
 
     try {
-
-
         if($validator->fails()){
             $message =$validator->errors()->all();
             return response()->json($message, 400);
@@ -173,13 +171,14 @@ class PostController extends Controller
             public function update(Request $request, $id)
         {
             $request->validate([
-                'category_id' => 'required',
+                'category_id' => 'numeric|required',
                 'name' => 'required',
                 'desc' => 'required',
-                'price' => 'required',
                 'location' => 'required',
-                'size' => 'required',
-                'status' => 'required',
+                'contact' => 'required',
+                'owner' => 'required',
+                'images' => 'required|array',
+                'images.*' => 'required|image|mimes:pdf,jpeg,png,jpg,gif',
                 
             ]);
 
