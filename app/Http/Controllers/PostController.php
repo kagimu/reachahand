@@ -61,93 +61,104 @@ class PostController extends Controller
     }
 
 
-   public function store(Request $request)
-{
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'numeric|required',
+            'name' => 'required',
+            'desc' => 'required',
+            'location' => 'required',
+            'contact' => 'required',
+            'owner' => 'required',
+            'images' => 'required|array',
+            'images.*' => 'required|image|mimes:pdf,jpeg,png,jpg,gif',
+        ]);
 
-    $validator =   Validator::make($request->all(), [
-        'category_id' => 'numeric|required',
-        'name' => 'required',
-        'desc' => 'required',
-        'location' => 'required',
-        'contact' => 'required',
-        'owner' => 'required',
-        'images' => 'required|array',
-        'images.*' => 'required|image|mimes:pdf,jpeg,png,jpg,gif',
-    ]);
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
 
+                // Check if the request is an AJAX request
+                if ($request->ajax()) {
+                    return response()->json($message, 400);
+                } else {
+                    // Redirect back with an error message
+                    return redirect()->route('index.posts')->with('error', $message);
+                }
+            } else {
+                // Get the authenticated user
+                $user = auth()->user();
 
-    try {
-        if($validator->fails()){
-            $message =$validator->errors()->all();
-            return response()->json($message, 400);
-        }else{
+                        $post = new Post();
+                        $post->category_id = $request->category_id;
+                        $post->name = $request->name;
+                        $post->desc = $request->desc;
+                        $post->price = $request->price;
+                        $post->location = $request->location;
+                        $post->size = $request->size;
+                        $post->status = $request->status;
+                        $post->type = $request->type;
+                        $post->bedroom = $request->bedroom;
+                        $post->bathroom = $request->bathroom;
+                        $post->contact = $request->contact;
+                        $post->owner = $request->input('owner');
+                        $post->user_id = $user->id; // Associate the post with the user
 
-  // Get the authenticated user
-    $user = auth()->user();
-    // dd($request->owner);
-
-    $post = new Post();
-    $post->category_id = $request->category_id;
-    $post->name = $request->name;
-    $post->desc = $request->desc;
-    $post->price = $request->price;
-    $post->location = $request->location;
-    $post->size = $request->size;
-    $post->status = $request->status;
-    $post->type = $request->type;
-    $post->bedroom = $request->bedroom;
-    $post->bathroom = $request->bathroom;
-    $post->contact = $request->contact;
-    $post->owner = $request->input('owner');
-    $post->user_id = $user->id; // Associate the post with the user
-
-     if ($request->hasFile('video')) {
-           $videoFile = $request->file('video');
-           $videoExt = $videoFile->getClientOriginalExtension();
-           $videoName = time() . '_'  . $videoExt;
-           $videoPath = $videoFile->storeAs('videos', $videoName, 'public');
-            $post->video = $videoPath;
-    }
-
-
-    if ($request->hasFile('profile_pic')) {
-          $imageFile = $request->file('profile_pic');
-          $imageExt = $imageFile->getClientOriginalExtension();
-          $imageName = time() . '_'  . $imageExt;
-          $imagePath = $imageFile->storeAs('images/profile', $imageName, 'public');
-          $post->profile_pic = $imagePath;
-    }
-
-                    // upload labtest documents 
-                    if ($request->hasFile('images')) {
-                         $images = [];
-                        foreach ($request->file('images') as $index => $file) {
-                            $file_extension = $file->getClientOriginalExtension();
-                            $file_name = time() . '_' . $index . '.' . $file_extension;
-                            $file_path = $file->storeAs('images/landlords', $file_name, 'public');
-                             array_push($images, $file_path);
+                        if ($request->hasFile('video')) {
+                            $videoFile = $request->file('video');
+                            $videoExt = $videoFile->getClientOriginalExtension();
+                            $videoName = time() . '_'  . $videoExt;
+                            $videoPath = $videoFile->storeAs('videos', $videoName, 'public');
+                                $post->video = $videoPath;
                         }
-                         $post->images = $images;
-                    }
 
-                   
-    $post->save();
 
-    // Include user information in the JSON response
-    return response()->json([
-        'message' => 'Post has been created successfully',
-        'post' => $post, // Include the created post
-    ], 200);
+                        if ($request->hasFile('profile_pic')) {
+                            $imageFile = $request->file('profile_pic');
+                            $imageExt = $imageFile->getClientOriginalExtension();
+                            $imageName = time() . '_'  . $imageExt;
+                            $imagePath = $imageFile->storeAs('images/profile', $imageName, 'public');
+                            $post->profile_pic = $imagePath;
+                        }
 
-}
+                                        // upload labtest documents 
+                        if ($request->hasFile('images')) {
+                            $images = [];
+                            foreach ($request->file('images') as $index => $file) {
+                                $file_extension = $file->getClientOriginalExtension();
+                                $file_name = time() . '_' . $index . '.' . $file_extension;
+                                $file_path = $file->storeAs('images/landlords', $file_name, 'public');
+                                array_push($images, $file_path);
+                            }
+                            $post->images = $images;
+                        }
 
-  
-}catch(\Exception $ex){
-    return response()->json([
-        'message' => $ex->getMessage()
-    ], 400);
-}
-}
+                $post->save();
+
+                // Check if the request is an AJAX request
+                if ($request->ajax()) {
+                    // Return JSON response with post information
+                    return response()->json([
+                        'message' => 'Post has been created successfully',
+                        'post' => $post,
+                    ], 200);
+                } else {
+                    // Redirect back with a success message
+                    return redirect()->route('index.posts')->with('success', 'Post has been created successfully');
+                }
+            }
+        } catch (Exception $e) {
+            // Handle exceptions as needed...
+
+            // Check if the request is an AJAX request
+            if ($request->ajax()) {
+                return response()->json(['error' => 'An error occurred.'], 500);
+            } else {
+                // Redirect back with an error message
+                return redirect()->route('index.posts')->with('error', 'An error occurred.');
+            }
+        }
+    }
 
 
     public function show($id)
