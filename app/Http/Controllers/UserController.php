@@ -158,26 +158,43 @@ class UserController extends Controller
 
     }
 
-    public function loginUserExample(Request $request)
-    {
-        $login_credentials = [
-            'phone' => $request->phone,
-            'password' => $request->password,
-            'active' => 1,
-        ];
+   use Illuminate\Support\Facades\Validator;
 
-        if (auth()->attempt($login_credentials)) {
-            //generate the token for the user
-            $user_login_token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            //now return this token on success login attempt
-            $user = auth()->user();
-            $user->token = $user_login_token;
-            return response()->json($user, 200);
-        } else {
-            //wrong login credentials, return, user not authorised to our system, return error code 401
-            return response()->json(['error' => 'Wrong login credentials, UnAuthorised Access'], 401);
-        }
+public function loginUserExample(Request $request)
+{
+    // Validate the request data
+    $validator = Validator::make($request->all(), [
+        'identifier' => 'required', // Assuming the user provides either a phone number or email as an 'identifier'
+        'password' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors()], 400);
     }
+
+    // Determine if the provided identifier is an email or phone number
+    $loginType = filter_var($request->identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+
+    // Build login credentials array
+    $login_credentials = [
+        $loginType => $request->identifier,
+        'password' => $request->password,
+        'active' => 1,
+    ];
+
+    if (auth()->attempt($login_credentials)) {
+        // Generate the token for the user
+        $user_login_token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+        // Now return this token on a successful login attempt
+        $user = auth()->user();
+        $user->token = $user_login_token;
+        return response()->json($user, 200);
+    } else {
+        // Wrong login credentials, return an error indicating unauthorized access
+        return response()->json(['error' => 'Wrong login credentials, Unauthorized Access'], 401);
+    }
+}
+
     public function forgotPassword(Request $request){
         $request->validate([
             'phone' => 'required|string',
