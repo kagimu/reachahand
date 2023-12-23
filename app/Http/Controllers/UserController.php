@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Storage;
 use Str;
+use Illuminate\Support\Facades\Validator;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\PhoneVerification;
-use Illuminate\Support\Facades\Validator;
 use Hash;
 use App\Helpers\SMS;
 
@@ -158,7 +158,7 @@ class UserController extends Controller
 
     }
 
-   use Illuminate\Support\Facades\Validator;
+
 
 public function loginUserExample(Request $request)
 {
