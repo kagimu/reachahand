@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ImpactController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SupportController;
@@ -64,6 +66,34 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/posts/{id}/edit', [PostController::class, 'editPost']);
     Route::delete('/posts/delete', [PostController::class, 'deletePost']);
     Route::post('posts/comment', [CommentController::class, 'store']);
+
+
+    Route::post('/blogs/{id}/like', [PostLikeController::class, 'store']);
+
+    Route::get('/blogs', [BlogController::class, 'getBlogs']);
+
+    Route::get('/blogs/search', [BlogController::class, 'search']);
+
+    Route::get('/blogs/{id}', [BlogController::class, 'getBlogDetails']);
+    Route::post('/blogs', [BlogController::class, 'store']);
+
+    Route::post('/blogs/{id}/edit', [BlogController::class, 'editBlog']);
+    Route::delete('/blogs/delete', [BlogController::class, 'deleteBlog']);
+    Route::post('blogs/comment', [CommentController::class, 'store']);
+
+
+    Route::get('/impacts', [ImpactController::class, 'getImpacts']);
+
+    Route::get('/impacts/search', [ImpactController::class, 'search']);
+
+    Route::get('/impacts/{id}', [ImpactController::class, 'getImpactDetails']);
+    Route::post('/impacts', [ImpactController::class, 'store']);
+
+    Route::post('/impacts/{id}/edit', [ImpactController::class, 'editImpact']);
+    Route::delete('/impacts/delete', [ImpactController::class, 'deleteImpact']);
+    Route::post('impacts/comment', [CommentController::class, 'store']);
+
+    
 
 
 
