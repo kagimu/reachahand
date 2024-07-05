@@ -34,7 +34,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th class="wd-15p border-bottom-0">title</th>
-                                <th class="wd-15p border-bottom-0">Date Uploaded</th>
+                                <th class="wd-15p border-bottom-0">Deadline</th>
                                 <th class="wd-15p border-bottom-0">cover image</th>
                                 <th class="wd-15p border-bottom-0">Documents</th>
                                 <th class="wd-15p border-bottom-0">DATE</th>
@@ -48,29 +48,35 @@
                                 <td>{{$opportunity->title}}</td>
                                 <td>{{$opportunity->date}}</td>
                                 <td>
-                                    @foreach($opportunity->cover_pic ?? [] as $image)
-                                    @if(is_string($image))
-                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" width="10" height='10'>
+                                    @if(is_string($opportunity->cover_pic))
+                                    <img src="{{ asset('storage/' . $opportunity->cover_pic)  }}" alt="Image"
+                                        class="img-fluid" style="max-width: 100%; max-height: 100%;">
                                     @endif
-                                    @endforeach
+
                                 </td>
                                 <td>
-                                    @foreach($opportunity->documents ?? [] as $image)
-                                    @if(is_string($image))
-                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" width="10" height='10'>
+                                    @if(is_array($opportunity->documents_url))
+                                    @if(count($opportunity->documents_url) > 0)
+                                    <a href="{{ asset($opportunity->documents_url[0]) }}" target="_blank">
+                                        View PDF
+                                    </a>
+                                    @else
+                                    No PDF available
                                     @endif
-                                    @endforeach
+                                    @elseif($opportunity->documents_url)
+                                    <a href="{{ asset($opportunity->documents_url) }}" target="_blank">
+                                        <strong>View PDF</strong>
+                                    </a>
+                                    @else
+                                    No PDF available
+                                    @endif
                                 </td>
                                 <td>{{$opportunity->created_at}}</td>
-                                <td>{{$opportunity->comments_count}}</td>
                                 <td>
-                                    <a href="{{route('edit.opportunitys', $opportunity->id)}}"
+                                    <a href="{{route('edit.opportunities', $opportunity->id)}}"
                                         class="btn btn-light mr-2">Edit</a>
-                                    <a href="{{route('confirm_delete.opportunitys', $opportunity->id)}}"
+                                    <a href="{{route('confirm_delete.opportunities', $opportunity->id)}}"
                                         class="btn btn-light">Delete</a>
-                                </td>
-                                <td><a href="{{route('show.opportunitys', $opportunity->id)}}"
-                                        class="btn btn-light">View Property</a>
                                 </td>
                             </tr>
                             @endforeach

@@ -64,27 +64,22 @@ class UserController extends Controller
 
     public function getProfile(Request $request)
     {
-        $user = User::with(['users', 'impacts'])
-            ->withCount(['users', 'impacts'])
-            ->find(Auth::id());
+        $user = User::with(['impacts', 'posts'])
+            ->withCount(['impacts', 'posts'])
+            ->orderBy('created_at', 'asc')->take(40)->get();
 
         return response()->json($user);
     }
 
-    public function updateProfile(Request $request)
+    public function edit($id)
     {
-        $user = Auth::user();
-        $user->first_name = ! is_null($request->first_name) ? $request->first_name : $user->first_name;
-        $user->last_name = ! is_null($request->phone) ? $request->phone : $user->phone;
-        $user->phone = ! is_null($request->phone) ? $request->phone : $user->phone;
-        $user->email = ! is_null($request->email) ? $request->email : $user->email;
-        $user->password = ! is_null($request->password) ? $request->password : $user->password;
-        $user->save();
 
-        return response()->json($user);
+        $user = User::find($id);
+
+        return view('users.edit', compact('user'));
     }
 
-    public function registerClient(Request $request)
+    public function update(Request $request, $id)
     {
         try {
             $request->validate([
@@ -98,7 +93,7 @@ class UserController extends Controller
             ]);
 
             // Create a new User instance
-            $user = new User;
+            $user = User::find($id);
 
             // Assign basic user information
             $user->first_name = $request->first_name;
@@ -109,17 +104,76 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->role = 'client';
 
+            // Handle profile picture upload
+            if ($request->hasFile('profile_pic')) {
+                $imageFile = $request->file('profile_pic');
+                $imageExt = $imageFile->getClientOriginalExtension();
+                $imageName = time().'_'.$imageExt;
+                $imagePath = $imageFile->storeAs('users/profile_pic', $imageName, 'public');
+                $user->profile_pic = $imagePath;
+            }
+
             // Save the user record
             $user->save();
 
+            // Create an access token
+            $access_token_example = $user->createToken('LaravelAuthApp')->accessToken;
+            $user->token = $access_token_example;
+
+            if ($request->ajax()) {
+                // Return JSON response with user information
+                return response()->json([
+                    'message' => 'User has been created successfully',
+                    'user' => $user,
+                ], 200);
+            } else {
+                // Redirect back with a success message
+                return redirect()->route('index.clients')->with('success', 'User has been updated successfully');
+            }
+        } catch (Exception $e) {
+            // Handle exceptions as needed...
+
+            // Check if the request is an AJAX request
+            if ($request->ajax()) {
+                return response()->json(['error' => 'An error occurred.'], 500);
+            } else {
+                // Redirect back with an error message
+                return redirect()->route('index.clients')->with('error', 'An error occurred.');
+            }
+        }
+    }
+
+    public function registerClient(Request $request)
+    {
+        try {
+            $request->validate([
+                'username' => 'required', // Validation rule for image upload
+            ]);
+
+            // Create a new User instance
+            $user = new User;
+
+            // Assign basic user information
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->category = $request->category;
+            $user->details = $request->details;
+            $user->username = $request->username;
+            $user->position = $request->position;
+            $user->password = bcrypt($request->password);
+            $user->email = $request->email;
+            $user->role = 'client';
+
             // Handle profile picture upload
             if ($request->hasFile('profile_pic')) {
-                $profilePic = $request->file('profile_pic');
-                $imageName = time().'.'.$profilePic->getClientOriginalExtension();
-                $profilePic->move(public_path('profile_pics'), $imageName);
-                $user->profile_pic = $imageName;
-                $user->save();
+                $imageFile = $request->file('profile_pic');
+                $imageExt = $imageFile->getClientOriginalExtension();
+                $imageName = time().'_'.$imageExt;
+                $imagePath = $imageFile->storeAs('users/profile_pic', $imageName, 'public');
+                $user->profile_pic = $imagePath;
             }
+
+            $user->save();
 
             // Create an access token
             $access_token_example = $user->createToken('LaravelAuthApp')->accessToken;

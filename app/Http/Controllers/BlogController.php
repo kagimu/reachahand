@@ -92,13 +92,14 @@ class BlogController extends Controller
                         $blog = new Blog();
                         $blog->category_id = $request->category_id;
                         $blog->name = $request->name;
+                        $blog->start = $request->start;
                         $blog->desc = $request->desc;
                         $blog->price = $request->price;
                         $blog->location = $request->location;
                         $blog->size = $request->size;
                         $blog->status = $request->status;
-                        $blog->type = $request->type;
-                        $blog->bedroom = $request->bedroom;
+                        $blog->end = $request->end;
+                        $blog->directions = $request->directions;
                         $blog->bathroom = $request->bathroom;
                         $blog->contact = $request->contact;
                         $blog->owner = $request->input('owner');

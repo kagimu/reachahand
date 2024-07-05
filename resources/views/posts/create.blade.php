@@ -8,7 +8,7 @@
 <div class="col-lg-12">>
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Add Post</h4>
+            <h4 class="card-title">Add Blog</h4>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('index.posts') }}"> Back</a>
@@ -22,16 +22,16 @@
             <form action="{{ route('store.posts') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="name" class="form-label">Title:</label>
-                    <input type="text" name="name" class="form-control" placeholder="Name of the Property">
-                    @error('name')
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" name="title" class="form-control" placeholder="">
+                    @error('title')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="desc" class="form-label">Description:</label>
-                    <textarea name="desc" rows="4" cols="30" class="form-control tinymce-editor" required></textarea>
+                    <textarea name="desc" rows="4" cols="30" id="textarea"></textarea>
                     @error('desc')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
@@ -45,9 +45,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="location" class="form-label">Exact Location incase of event:</label>
-                    <input type="text" name="location" class="form-control" placeholder="Location of the Property">
-                    @error('location')
+                    <label for="date" class="form-label">Exact date written:</label>
+                    <input type="text" name="date" class="form-control" placeholder="">
+                    @error('date')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
@@ -59,28 +59,13 @@
                     @enderror
                 </div>
 
-                <div class="col-md-10">
-                    <label for="images" class="form-label">Upload Images of the Post:</label>
-                    <input type="file" name="images[]" id="images" multiple="multiple" class="form-control">
-                    @error('image')
+                  <div class="col-md-10">
+                    <label for='cover_pic' class="form-label">Select Cover Picture:</label>
+                    <input type="file" name="cover_pic" id="cover_pic" class="form-control" />
+                    @error('cover_pic')
                     <div class="alert alert-danger mt-4 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-10">
-                    <label for='profile_pic' class="form-label">Select Cover Picture:</label>
-                    <input type="file" name="profile_pic" id="profile_pic" class="form-control" />
-                    @error('profile_pic')
-                    <div class="alert alert-danger mt-4 mb-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-10">
-                    <label for='video' class="form-label">Select Video:</label>
-                    <input type="file" name="video" id="video" class="form-control" />
-                    @error('video')
-                    <div class="alert alert-danger mt-4 mb-0">{{ $message }}</div>
-                    @enderror
-                </div>
-
 
                 <button type="submit" class="btn btn-primary mt-5 mb-0">Create Blog</button>
 

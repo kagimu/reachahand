@@ -15,8 +15,8 @@
         <div class="col-lg-7">
             <div class="box-widget widget-user">
                 <div class="widget-user-image d-sm-flex">
-                    <img alt="avatar" class="rounded-circle border p-0" src="{{$impact->user->profile_pic_url}}"
-                        height="70" width="70">
+                    <img src="{{ $impact->user->profile_pic_url ? asset($impact->user->profile_pic_url) : asset('images/placeholder.png') }}"
+                        alt="img" class="img-fluid" style="max-width: 25%; max-height: 50%; border-radius:40px;">
                     <div class="ml-sm-4 mt-4">
                         <h4 class="pro-user-username mb-3 font-weight-bold">{{$impact->user->name}}
                             @if($impact->user->role
@@ -71,12 +71,13 @@
         </div>
         <div class="col-lg-5">
             <!-- Images -->
-            <h5 class="font-weight-bold">Post Images</h5>
+            <h5 class="font-weight-bold">Impact Images</h5>
             <div class="row">
                 @foreach($impact->images as $image)
                 @if(is_string($image))
-                <div class="col-6 p-6">
-                    <img src="{{ asset('storage/' . $image) }}" alt="Image" width="500" height="200">
+                <div class="col-md-6 mb-3">
+                    <img src="{{ asset('storage/' . $image) }}" alt="Image"
+                        style="max-width: 100%; max-height: 100%; border-radius:8px;">
                 </div>
                 @endif
                 @endforeach

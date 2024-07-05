@@ -7,22 +7,25 @@ use Illuminate\Console\Command;
 
 class UpdateUserOnlineStatus extends Command
 {
-    protected $signature = 'update:user-status';
+    protected $signature = 'user-online-status:update';
 
     protected $description = 'Update user status to offline at 12 AM every day';
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function handle()
     {
-        // Get users who were online before today
-        $usersToUpdate = User::where('online', true)
+        $users = User::where('online', true)
             ->where('last_activity', '<', now()->startOfDay())
             ->get();
 
-        // Update the status to offline
-        $usersToUpdate->each(function ($user) {
-            $user->online = false;
-            $user->save();
-        });
+        foreach ($users as $user) {
+            // Set online status to false
+            $user->update(['online' => false]);
+        }
 
         $this->info('User status updated successfully.');
     }

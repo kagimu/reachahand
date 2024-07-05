@@ -164,9 +164,9 @@ class ImpactController extends Controller
     public function edit($id)
     {
         $categories = Category::all();
-        $impact = Impacts::find($id);
+        $impact = Impact::find($id);
 
-        return view('impacts.edit', compact('categories', 'Impact'));
+        return view('impacts.edit', compact('categories', 'impact'));
     }
 
     public function update(Request $request, $id)

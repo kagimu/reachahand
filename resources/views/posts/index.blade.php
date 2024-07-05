@@ -35,12 +35,11 @@
                                 <th>ID</th>
                                 <th class="wd-15p border-bottom-0">Author</th>
                                 <th class="wd-15p border-bottom-0">TITLE</th>
-                                <th class="wd-15p border-bottom-0">DESC</th>
                                 <th class="wd-15p border-bottom-0">TAG</th>
                                 <th class="wd-15p border-bottom-0">OWNER</th>
-                                <th class="wd-15p border-bottom-0">LOCATION</th>
+                                <th class="wd-15p border-bottom-0">date written</th>
                                 <th class="wd-20p border-bottom-0">IMAGES</th>
-                                <th class="wd-15p border-bottom-0">DATE</th>
+                                <th class="wd-15p border-bottom-0">post uploaded on</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -50,27 +49,16 @@
                                 <td>{{$post->id}}</td>
                                 <td>{{$post->user->name}}</td>
                                 <td>{{$post->title}}</td>
-                                <td>{{$post->desc}}</td>
                                 <td>{{$post->tag}}</td>
                                 <td>{{$post->owner}}</td>
-                                <td>{{$post->location}}</td>
-                                <td>
-                                    @foreach($post->images ?? [] as $image)
-                                    @if(is_string($image))
-                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" width="10" height='10'>
-                                    @endif
-                                    @endforeach
-
-
-                                </td>
+                                <td>{{$post->date}}</td>
                                 <td>{{$post->created_at}}</td>
-                                <td>{{$post->comments_count}}</td>
                                 <td>
                                     <a href="{{route('edit.posts', $post->id)}}" class="btn btn-light mr-2">Edit</a>
                                     <a href="{{route('confirm_delete.posts', $post->id)}}"
                                         class="btn btn-light">Delete</a>
-                                </td>
-                                <td><a href="{{route('show.posts', $post->id)}}" class="btn btn-light">View Property</a>
+                                    <a href="{{route('show.posts', $post->id)}}" class="btn btn-light">View Blog
+                                        Details</a>
                                 </td>
                             </tr>
                             @endforeach

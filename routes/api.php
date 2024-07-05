@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\EventsController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,17 +46,13 @@ Route::post('login', [UserController::class, 'loginUserExample']);
 Route::get('getAgents', [AgentController::class, 'getAgents']);
 
 Route::post('registerSupport', [UserController::class, 'registerSupport']);
-
-//add this middleware to ensure that every request is authenticated
-Route::middleware('auth:api')->group(function () {
-
-    Route::get('/profile', [UserController::class, 'getProfile']);
-
-    Route::post('/profile/update', [UserController::class, 'updateProfile']);
-
-    Route::post('/profile/avatar', [UserController::class, 'updateAvatar']);
-
-    Route::post('/updateFCMToken', [UserController::class, 'updateFCMToken']);
+   Route::get('/partners', [PartnerController::class, 'getPartners']);
+    Route::get('/partners/search', [PartnerController::class, 'search']);
+    Route::get('/partners/{id}', [PartnerController::class, 'getPartner']);
+    Route::post('/partners', [PartnerController::class, 'store']);
+    Route::post('/partners/{id}/edit', [PartnerController::class, 'editPartner']);
+    Route::delete('/partners/delete', [PartnerController::class, 'deletePartner']);
+    Route::post('partners/comment', [CommentController::class, 'store']);
 
     Route::get('/posts', [PostController::class, 'getPosts']);
     Route::get('/posts/search', [PostController::class, 'search']);
@@ -63,6 +61,60 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/posts/{id}/edit', [PostController::class, 'editPost']);
     Route::delete('/posts/delete', [PostController::class, 'deletePost']);
     Route::post('posts/comment', [CommentController::class, 'store']);
+
+    Route::get('/events', [EventsController::class, 'getEvents']);
+    Route::get('/events/search', [EventsController::class, 'search']);
+    Route::get('/events/{id}', [EventsController::class, 'getEventDetails']);
+    Route::post('/events', [EventsController::class, 'store']);
+    Route::post('/events/{id}/edit', [EventsController::class, 'editEvent']);
+    Route::delete('/events/delete', [EventsController::class, 'deleteEvent']);
+    Route::post('events/comment', [CommentController::class, 'store']);
+
+
+    Route::get('/opportunities', [OpportunityController::class, 'getOpportunities']);
+    Route::get('/opportunities/search', [OpportunityController::class, 'search']);
+    Route::get('/opportunities/{id}', [OpportunityController::class, 'getOpportunity']);
+    Route::post('/opportunities', [OpportunityController::class, 'store']);
+    Route::post('/opportunities/{id}/edit', [OpportunityController::class, 'editOpportunity']);
+    Route::delete('/opportunities/delete', [OpportunityController::class, 'destroy']);
+    Route::post('opportunities/comment', [CommentController::class, 'store']);
+
+ 
+
+    Route::get('/programs', [ProgramController::class, 'getPrograms']);
+    Route::get('/programs/search', [ProgramController::class, 'search']);
+    Route::get('/programs/{id}', [ProgramController::class, 'getProgramDetails']);
+    Route::post('/programs', [ProgramController::class, 'store']);
+    Route::post('/programs/{id}/edit', [ProgramController::class, 'editProgram']);
+    Route::delete('/programs/{id}', [ProgramController::class, 'deletePost']);
+    Route::post('programs/comment', [CommentController::class, 'store']);
+
+    Route::get('/reports', [ReportController::class, 'getReports']);
+    Route::get('/reports/search', [ReportController::class, 'search']);
+    Route::get('/reports/{id}', [ReportController::class, 'getReports']);
+    Route::post('/reports', [ReportController::class, 'store']);
+    Route::post('/reports/{id}/edit', [ReportController::class, 'editReport']);
+    Route::delete('/reports/delete', [ReportController::class, 'deleteReport']);
+    Route::post('reports/comment', [CommentController::class, 'store']);
+
+
+    Route::post('/send-email', [EmailController::class,'sendEmail']);
+
+
+
+    Route::get('/profile', [UserController::class, 'getProfile']);
+
+//add this middleware to ensure that every request is authenticated
+Route::middleware('auth:api')->group(function () {
+
+    
+
+    Route::post('/profile/update', [UserController::class, 'updateProfile']);
+
+    Route::post('/profile/avatar', [UserController::class, 'updateAvatar']);
+
+    Route::post('/updateFCMToken', [UserController::class, 'updateFCMToken']);
+
 
     Route::post('/blogs/{id}/like', [PostLikeController::class, 'store']);
     Route::get('/blogs', [BlogController::class, 'getBlogs']);
@@ -80,38 +132,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/impacts/{id}/edit', [ImpactController::class, 'editImpact']);
     Route::delete('/impacts/delete', [ImpactController::class, 'deleteImpact']);
     Route::post('impacts/comment', [CommentController::class, 'store']);
-
-    Route::get('/opportunities', [OpportunityController::class, 'getOpportunities']);
-    Route::get('/opportunities/search', [OpportunityController::class, 'search']);
-    Route::get('/opportunities/{id}', [OpportunityController::class, 'getOpportunityDetails']);
-    Route::post('/opportunities', [OpportunityController::class, 'store']);
-    Route::post('/opportunities/{id}/edit', [OpportunityController::class, 'editOpportunity']);
-    Route::delete('/opportunities/delete', [OpportunityController::class, 'deleteOpportunity']);
-    Route::post('opportunities/comment', [CommentController::class, 'store']);
-
-    Route::get('/partners', [PartnerController::class, 'getPartners']);
-    Route::get('/partners/search', [PartnerController::class, 'search']);
-    Route::get('/partners/{id}', [PartnerController::class, 'getPartnerDetails']);
-    Route::post('/partners', [PartnerController::class, 'store']);
-    Route::post('/partners/{id}/edit', [PartnerController::class, 'editPartner']);
-    Route::delete('/partners/delete', [PartnerController::class, 'deletePartner']);
-    Route::post('partners/comment', [CommentController::class, 'store']);
-
-    Route::get('/programs', [ProgramController::class, 'getPrograms']);
-    Route::get('/programs/search', [ProgramController::class, 'search']);
-    Route::get('/programs/{id}', [ProgramController::class, 'getProgramDetails']);
-    Route::post('/programs', [ProgramController::class, 'store']);
-    Route::post('/programs/{id}/edit', [ProgramController::class, 'editProgram']);
-    Route::delete('/programs/delete', [ProgramController::class, 'deleteProgram']);
-    Route::post('programs/comment', [CommentController::class, 'store']);
-
-    Route::get('/reports', [ReportController::class, 'getReports']);
-    Route::get('/reports/search', [ReportController::class, 'search']);
-    Route::get('/reports/{id}', [ReportController::class, 'getReportDetails']);
-    Route::post('/reports', [ReportController::class, 'store']);
-    Route::post('/reports/{id}/edit', [ReportController::class, 'editReport']);
-    Route::delete('/reports/delete', [ReportController::class, 'deleteReport']);
-    Route::post('reports/comment', [CommentController::class, 'store']);
 
     Route::get('comments/{id}/show', [CommentController::class, 'getComment']);
     Route::post('comments/{id}/edit', [CommentController::class, 'editComment']);

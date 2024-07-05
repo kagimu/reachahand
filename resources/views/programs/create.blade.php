@@ -22,9 +22,9 @@
             <form action="{{ route('store.programs') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="name" class="form-label">Program Name:</label>
-                    <input type="text" name="name" class="form-control" placeholder="Name of the Property">
-                    @error('name')
+                    <label for="title" class="form-label">Program Name:</label>
+                    <input type="text" name="title" class="form-control" placeholder="">
+                    @error('title')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>

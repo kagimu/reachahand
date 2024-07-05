@@ -14,26 +14,15 @@ class Post extends Model
     protected $fillable = [
         'user_id',
         'owner',
-        'contact',
-        'profile_pic',
-        'bedroom',
-        'bathroom',
+        'title',
+        'cover_pic',
         'desc',
-        'price',
-        'location',
-        'status',
-        'size',
-        'type',
-        'quick_true',
-        'video',
+        'date',
+        'tag',
     ];
 
-    protected $casts = [
-        'images' => 'array',
 
-    ];
-
-    protected $appends = ['profile_pic_url', 'video_url', 'post_images'];
+    protected $appends = ['cover_pic_url'];
 
     protected $guarded = [];
 
@@ -57,34 +46,10 @@ class Post extends Model
         return $this->likes->contains('user_id', auth()->user()->id);
     }
 
-    public function getProfilePicUrlAttribute()
+    public function getCoverPicUrlAttribute()
     {
-        if ($this->profile_pic) {
-            return url('storage/'.$this->profile_pic);
-        }
-
-        return null;
-    }
-
-    public function getVideoUrlAttribute()
-    {
-        if ($this->video) {
-            return url('storage/'.$this->video);
-        }
-
-        return null;
-    }
-
-    public function getPostImagesAttribute()
-    {
-        if ($this->images) {
-            $imagesUrl = [];
-            foreach ($this->images as $image) {
-                $imageUrl = url('storage/'.$image);
-                array_push($imagesUrl, $imageUrl);
-            }
-
-            return $imagesUrl;
+        if ($this->cover_pic) {
+            return url('storage/'.$this->cover_pic);
         }
 
         return null;

@@ -22,9 +22,9 @@
             <form action="{{ route('store.impacts') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="name" class="form-label">Title:</label>
-                    <input type="text" name="name" class="form-control" placeholder="Name of the Property">
-                    @error('name')
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" name="title" class="form-control" placeholder="Name of the Property">
+                    @error('title')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>

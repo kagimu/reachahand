@@ -13,8 +13,9 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-6 col-xl-3">
-        <div class="card bg-teal">
+        <div class="card bg-blue">
             <div class="card-body">
+                <a href="{{route('index.posts')}}"></a>
                 <div class="d-flex no-block align-items-center">
                     <div>
                         <h6 class="text-white">Blog Posts</h6>
@@ -28,7 +29,8 @@
         </div>
     </div>
     <div class="col-sm-12 col-md-6 col-xl-3">
-        <div class="card bg-indigo">
+        <a href="{{route('index.clients')}}"></a>
+        <div class="card bg-teal">
             <div class="card-body">
                 <div class="d-flex no-block align-items-center">
                     <div>
@@ -36,7 +38,22 @@
                         <h2 class="text-white m-0 font-weight-bold">{{$clients}}</h2>
                     </div>
                     <div class="ml-auto">
-                        <span class="text-white display-6"><i class="fa fa-users fa-2x"></i></span>
+                        <span class="text-white display-6"><i class="fa fa-user-circle fa-2x"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-xl-3">
+        <div class="card bg-blue">
+            <div class="card-body">
+                <div class="d-flex no-block align-items-center">
+                    <div>
+                        <h6 class="text-white">Impact Posts</h6>
+                        <h2 class="text-white m-0 font-weight-bold">{{$impacts}}</h2>
+                    </div>
+                    <div class="ml-auto">
+                        <span class="text-white display-6"><i class="fa fa-server fa-2x"></i></span>
                     </div>
                 </div>
             </div>
@@ -47,26 +64,11 @@
             <div class="card-body">
                 <div class="d-flex no-block align-items-center">
                     <div>
-                        <h6 class="text-white">Impact Posts</h6>
-                        <h2 class="text-white m-0 font-weight-bold">{{$impacts}}</h2>
-                    </div>
-                    <div class="ml-auto">
-                        <span class="text-white display-6"><i class="fa fa-wrench fa-2x"></i></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-6 col-xl-3">
-        <div class="card bg-indigo">
-            <div class="card-body">
-                <div class="d-flex no-block align-items-center">
-                    <div>
                         <h6 class="text-white">Partners</h6>
-                        <h2 class="text-white m-0 font-weight-bold">15</h2>
+                        <h2 class="text-white m-0 font-weight-bold">{{$partners}}</h2>
                     </div>
                     <div class="ml-auto">
-                        <span class="text-white display-6"><i class="fa fa-th-list fa-2x"></i></span>
+                        <span class="text-white display-6"><i class="fa fa-users fa-2x"></i></span>
                     </div>
                 </div>
             </div>

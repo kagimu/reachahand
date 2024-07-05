@@ -19,7 +19,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">All Posts</div>
+                <div class="card-title">All Partners</div>
             </div>
             <div class="card-body">
                 @if(Session::has('message'))
@@ -38,7 +38,7 @@
                                 <th class="wd-15p border-bottom-0">Cover image</th>
                                 <th class="wd-20p border-bottom-0">IMAGES</th>
                                 <th class="wd-15p border-bottom-0">DATE</th>
-                                <th>Actions</th>
+                                <th class="wd-15p border-bottom-0">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,26 +47,27 @@
                                 <td>{{$partner->id}}</td>
                                 <td>{{$partner->partner_name}}</td>
                                 <td>{{$partner->partner_category}}</td>
-                                <td>{{$partner->cover_pic}}</td>
+                                <td>@if(is_string($partner->cover_pic))
+                                    <img src="{{ asset('storage/' . $partner->cover_pic) }}" alt="Cover Pic"
+                                        class="img-fluid" style="max-width: 80%; max-height: 80%;">
+                                    @endif
+                                </td>
                                 <td>
                                     @foreach($partner->programs_supported_images ?? [] as $image)
                                     @if(is_string($image))
-                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" width="10" height='10'>
+                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" class="img-fluid"
+                                        style="max-width: 30%; max-height: 30%;">
                                     @endif
                                     @endforeach
 
 
                                 </td>
                                 <td>{{$partner->created_at}}</td>
-                                <td>{{$partner->comments_count}}</td>
                                 <td>
                                     <a href="{{route('edit.impacts', $partner->id)}}"
                                         class="btn btn-light mr-2">Edit</a>
                                     <a href="{{route('confirm_delete.impacts', $partner->id)}}"
                                         class="btn btn-light">Delete</a>
-                                </td>
-                                <td><a href="{{route('show.impacts', $partner->id)}}" class="btn btn-light">View
-                                        Property</a>
                                 </td>
                             </tr>
                             @endforeach

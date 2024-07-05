@@ -6,9 +6,9 @@
     <!-- Meta data -->
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
-    <meta content="linkup" name="description">
-    <meta content="JayP UG Private Technologies" name="author">
-    <meta name="keywords" content="link, linkup, li, linking, lik, linked" />
+    <meta content="Reach A Hand" name="description">
+    <meta content="Sir JayP Private Technologies" name="author">
+    <meta name="keywords" content="reachahand, reacha, reach, hand, rea, reached" />
 
     <!-- Title -->
     <title>Reach A Hand | {{session('title')}}</title>
@@ -64,11 +64,6 @@
 
 <body class="app sidebar-mini light-mode default-sidebar">
 
-    <!---Global-loader-->
-    {{--<div id="global-loader">--}}
-        {{--<img src="../../assets/images/svgs/loader.svg" alt="loader">--}}
-        {{--</div>--}}
-
     <div class="page">
         <div class="page-main">
             <!--aside open-->
@@ -119,6 +114,19 @@
                                 <polyline points="2 12 12 17 22 12"></polyline>
                             </svg>
                             <span class="side-menu__label">Blogs</span></a>
+                    </li>
+                     <li class="slide">
+                        <a class="side-menu__item" href="{{route('index.events')}}">
+                            <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                </path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            <span class="side-menu__label">Events</span></a>
                     </li>
                     <li class="slide">
                         <a class="side-menu__item" href="{{route('index.impacts')}}">
@@ -220,7 +228,7 @@
                                 <div class="dropdown  header-option">
                                     <a class="nav-link icon p-0" data-toggle="dropdown">
                                         <span class="nav-span">
-                                            <h3 style="margin-top: 20px;">ADMIN PANEL</h3>
+                                            <h3 style="margin-top: 20px;">ADMIN CONTROL CENTRE</h3>
                                         </span>
                                     </a>
                                 </div>
@@ -230,10 +238,10 @@
                                     <div class="dropdown profile-dropdown">
                                         <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                                             <span>
-                                                <img src="{{ Auth::user()->image ? asset(Auth::user()->image) : asset('images/placeholder.png') }}"
+                                                <img src="{{ Auth::user()->profile_pic_url ? asset(Auth::user()->profile_pic) : asset('images/placeholder.png') }}"
                                                     alt="img" style="height: 55px; width:55px;">
                                                 <img src="https://reachahand.org/wp-content/themes/qido/images/rahu_logo_vert.svg"
-                                                    class="avatar avatar-sm brround" style="height: 60px; width:60px;">
+                                                    class="avatar avatar-bg brround" style="height: 60px; width:60px;">
                                             </span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow animated">
@@ -299,7 +307,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-md-12 col-sm-12 mt-3 mt-lg-0 text-center">
-                        Copyright © 2024 <a href="#">{{config('app.name')}}</a>. Designed by <a href="#">Sir JayP</a>
+                        Copyright © 2024 <a href="#">Reach A Hand</a>. Designed by <a href="#">Sir JayP</a>
                         All rights reserved.
                     </div>
                 </div>
@@ -341,6 +349,27 @@
     <!-- P-scroll js-->
     <script src="../../assets/plugins/p-scrollbar/p-scrollbar.js"></script>
     <script src="../../assets/plugins/p-scrollbar/p-scroll1.js"></script>
+
+    <!-- Include TinyMCE library -->
+     <script src="https://cdn.tiny.cloud/1/311qq5bqd6m9htxilqjx58ez6xae1labim9mdufl0f1eju1b/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+    tinymce.init({
+        selector: 'textarea#textarea',
+        plugins: 'code table lists',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table',
+        init_instance_callback : function(editor) {
+        let editorH = editor.editorContainer.offsetHeight;
+        $('#formTranslation_trad')
+            .css({
+                'position':'absolute',
+                'height':editorH
+            })
+            .show();
+    },
+    });
+   </script>
+
+    
 
     <!-- Data tables -->
     <script src="../../assets/plugins/datatable/js/jquery.dataTables.js"></script>

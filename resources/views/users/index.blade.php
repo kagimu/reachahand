@@ -36,13 +36,13 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th class="wd-15p border-bottom-0">Full name</th>
-                                <th class="wd-15p border-bottom-0">Login time</th>
-                                <th class="wd-20p border-bottom-0">Last seen</th>
-                                <th class="wd-25p border-bottom-0">Status</th>
-                                <th class="wd-25p border-bottom-0">Accurate Location</th>
-                                <th class="wd-10p border-bottom-0">Registered Date</th>
-                                <th>Actions</th>
+                                <th class="wd-15p border-bottom-0 card-title">Full name</th>
+                                <th class="wd-15p border-bottom-0 card-title">Login time</th>
+                                <th class="wd-20p border-bottom-0 card-title">Last seen</th>
+                                <th class="wd-25p border-bottom-0 card-title">Status</th>
+                                <th class="wd-25p border-bottom-0 card-title">Accurate Location</th>
+                                <th class="wd-10p border-bottom-0 card-title">Registered Date</th>
+                                <th class="wd-20p border-bottom-0 card-title ml-10"> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,12 +65,11 @@
                                 </td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>
-                                <td>
                                     <a href="{{route('edit.users', $user->id)}}" class="btn btn-light mr-2">Edit</a>
                                     <a href="{{route('confirm_delete.users', $user->id)}}"
                                         class="btn btn-light">Delete</a>
-                                </td>
-                                <td><a href="{{route('show.users', $user->id)}}" class="btn btn-light">View Property</a>
+                                    <a href="{{route('show.users', $user->id)}}" class="btn btn-light">View User's
+                                        Details</a>
                                 </td>
                             </tr>
                             @endforeach

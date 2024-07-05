@@ -33,9 +33,8 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th class="wd-15p border-bottom-0">USER</th>
+                                <th class="wd-15p border-bottom-0">AUTHOR</th>
                                 <th class="wd-15p border-bottom-0">TITLE</th>
-                                <th class="wd-15p border-bottom-0">DESC</th>
                                 <th class="wd-15p border-bottom-0">TAG</th>
                                 <th class="wd-15p border-bottom-0">OWNER</th>
                                 <th class="wd-15p border-bottom-0">LOCATION</th>
@@ -50,28 +49,26 @@
                                 <td>{{$impact->id}}</td>
                                 <td>{{$impact->user->name}}</td>
                                 <td>{{$impact->title}}</td>
-                                <td>{{$impact->desc}}</td>
                                 <td>{{$impact->tag}}</td>
                                 <td>{{$impact->owner}}</td>
                                 <td>{{$impact->location}}</td>
                                 <td>
                                     @foreach($impact->images ?? [] as $image)
                                     @if(is_string($image))
-                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" width="10" height='10'>
+                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" class="img-fluid"
+                                        style="max-width: 50%; max-height: 60%; border-radius:3px;">
                                     @endif
                                     @endforeach
 
 
                                 </td>
                                 <td>{{$impact->created_at}}</td>
-                                <td>{{$impact->comments_count}}</td>
                                 <td>
                                     <a href="{{route('edit.impacts', $impact->id)}}" class="btn btn-light mr-2">Edit</a>
                                     <a href="{{route('confirm_delete.impacts', $impact->id)}}"
                                         class="btn btn-light">Delete</a>
-                                </td>
-                                <td><a href="{{route('show.impacts', $impact->id)}}" class="btn btn-light">View
-                                        Property</a>
+                                    <a href="{{route('show.impacts', $impact->id)}}" class="btn btn-light">View
+                                        Impact</a>
                                 </td>
                             </tr>
                             @endforeach

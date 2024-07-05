@@ -18,19 +18,19 @@
                                 <div class="modal-content">
                                     <div class="modal-body text-center p-4">
                                         <i class="fe fe-x-circle fs-100 text-danger lh-1 mb-4 d-inline-block"></i>
-                                        <h4 class="text-danger mb-20">Delete Post</h4>
+                                        <h4 class="text-danger mb-20">Delete Opportunity</h4>
                                        <p class="mb-4 mx-4">Are you sure you would like to delete this Property entirely?</p>
 
-                                       @if ($post)
-                                            <form action="{{ route('deletePost.posts')}}" method="POST">
+                                       @if ($opportunity)
+                                            <form action="{{ route('destroy.opportunities')}}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <input type="hidden" name="id" value="{{$post->id}}">
-                                                <a href="{{ route('index.posts') }}" class="btn btn-primary pd-x-25">Cancel</a>
+                                                <input type="hidden" name="id" value="{{$opportunity->id}}">
+                                                <a href="{{ route('index.opportunities') }}" class="btn btn-primary pd-x-25">Cancel</a>
                                                 <button class="btn btn-danger pd-x-25" type="submit">Yes, Delete</button>
                                             </form>
                                         @else
-                                            <p>This post does not exist.</p>
+                                            <p>This Opportunity does not exist.</p>
                                         @endif
 
                                     </div>

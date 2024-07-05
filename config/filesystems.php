@@ -41,6 +41,7 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+            'max_size' => 20971520, // 20 megabytes in bytes
             'throw' => false,
         ],
 

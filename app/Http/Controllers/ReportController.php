@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
     public function index()
     {
-        session(['title' => 'Reports']);
+        session(['title' => 'Annual Reports']);
         $reports = Report::get();
 
         return view('reports.index', compact('reports'));
@@ -26,7 +27,7 @@ class ReportController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required',
             'desc' => 'required',
             'year' => 'required',
@@ -48,38 +49,37 @@ class ReportController extends Controller
                 // Get the authenticated user
                 $user = auth()->user();
 
-                $reports = new Report();
+                $report = new Report();
                 $report->title = $request->title;
                 $report->desc = $request->desc;
                 $report->year = $request->year;
 
-                if ($request->hasFile('reports')) {
-                    $reports = [];
-                    foreach ($request->file('reports') as $index => $file) {
-                        // Check if the file is a PDF
-                        if ($file->getMimeType() == 'application/pdf') {
-                            // Generate a unique file name
-                            $file_extension = $file->getClientOriginalExtension();
-                            $file_name = time().'_'.$index.'.'.$file_extension;
 
-                            // Store the PDF file in the 'public/reports' directory
-                            $file_path = $file->storeAs('documents/reports', $file_name, 'public');
-
-                            // Add the file path to the array
-                            $reports[] = $file_path;
-                        }
-                    }
-
-                    // Assign the array of PDF file paths to the model attribute
-                    $report->reports = $reports;
+                if ($request->hasFile('image')) {
+                    $imageFile = $request->file('image');
+                    $imageExt = $imageFile->getClientOriginalExtension();
+                    $imageName = time().'_'.$imageExt;
+                    $imagePath = $imageFile->storeAs('reports/image', $imageName, 'public');
+                    $report->image = $imagePath;
                 }
 
+
+              if ($request->hasFile('report')) {
+                    $documentFile = $request->file('report');
+                    $documentExt = $documentFile->getClientOriginalExtension(); // Get the file extension
+                    $documentName = time().'_'.$documentExt; // Generate a unique name for the document file
+                    $documentPath = $documentFile->storeAs('reports/report', $documentName, 'public'); // Store the document file
+                    $report->report = $documentPath; // Save the document file path to the database or model
+                }
+
+
                 $report->save();
+
                 if ($request->ajax()) {
                     // Return JSON response with reports information
                     return response()->json([
                         'message' => 'Report has been created successfully',
-                        'reports' => $reports,
+                        'report' => $report,
                     ], 200);
                 } else {
                     // Redirect back with a success message
@@ -94,7 +94,7 @@ class ReportController extends Controller
                 return response()->json(['error' => 'An error occurred.'], 500);
             } else {
                 // Redirect back with an error message
-                return redirect()->route('index.reportss')->with('error', 'An error occurred.');
+                return redirect()->route('index.reports')->with('error', 'An error occurred.');
             }
         }
     }
@@ -105,24 +105,7 @@ class ReportController extends Controller
 
         $report = Report::find($id);
 
-        return view('reports.create', compact('report'));
-    }
-
-    public function confirmDelete($id)
-    {
-        session(['title' => 'Confirm Delete']);
-        $report = Report::find($id);
-
-        return view('reports.confirm_delete', compact('report'));
-    }
-
-    public function delete(Request $request)
-    {
-        $report = Report::find($request->id);
-
-        $report->delete();
-
-        return redirect()->route('index.reports');
+        return view('reports.edit', compact('report'));
     }
 
     public function getReports()
@@ -159,25 +142,37 @@ class ReportController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'report_name' => 'required',
-            'phone' => 'required',
-            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title' => 'required',
+            'desc' => 'required',
+            'year' => 'required',
+
         ]);
 
-        $report = Category::find($id);
-        $report->report_name = is_null($request->report_name) ? $report->report_name : $request->report_name;
-        $report->phone = is_null($request->phone) ? $report->phone : $request->phone;
+        $report = Report::find($id);
+        $report->title = is_null($request->title) ? $report->title : $request->title;
+        $report->year = is_null($request->year) ? $report->year : $request->year;
+        $report->desc = is_null($request->desc) ? $report->desc : $request->desc;
 
-        if ($image = $request->file('profile_pic')) {
-            $destinationPath = 'profile_pic/';
-            $profileImage = date('YmdHis').'.'.$image->getClientOriginalExtension();
-            $image->move($destinationPath, $profileImage);
-            $report['profile_pic'] = "$profileImage";
-        }
+             if ($request->hasFile('image')) {
+                    $imageFile = $request->file('image');
+                    $imageExt = $imageFile->getClientOriginalExtension();
+                    $imageName = time().'_'.$imageExt;
+                    $imagePath = $imageFile->storeAs('reports/image', $imageName, 'public');
+                    $report->image = $imagePath;
+                }
 
-        $report->save();
+                if ($request->hasFile('report')) {
+                    $documentFile = $request->file('report');
+                    $documentExt = $documentFile->getClientOriginalExtension(); // Get the file extension
+                    $documentName = time().'_'.$documentExt; // Generate a unique name for the document file
+                    $documentPath = $documentFile->storeAs('reports/report', $documentName, 'public'); // Store the document file
+                    $report->report = $documentPath; // Save the document file path to the database or model
+                }
 
-        return redirect()->route('reports.index')
+                        
+                $report->save();
+
+        return redirect()->route('index.reports')
             ->with('success', 'Report Has Been updated successfully');
     }
 
@@ -187,5 +182,27 @@ class ReportController extends Controller
 
         return redirect()->route('reports.index')
             ->with('success', 'Report has been deleted successfully');
+    }
+
+    public function confirmDelete($id)
+    {
+        session(['title' => 'Confirm Delete of Report']);
+        $report = Report::find($id);
+
+        return view('reports.confirm_delete', compact('report'));
+    }
+
+    public function deleteReport(Request $request)
+    {
+        $report = Report::find($request->id);
+
+        if ($report) {
+            $report->delete();
+
+            return redirect()->route('reports.index')->with('success', 'Report has been deleted successfully');
+        } else {
+            return redirect()->route('reports.index')->with('error', 'Report not found');
+        }
+
     }
 }

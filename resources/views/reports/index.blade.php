@@ -19,7 +19,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">All Posts</div>
+                <div class="card-title">All Reports</div>
             </div>
             <div class="card-body">
                 @if(Session::has('message'))
@@ -33,15 +33,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th class="wd-15p border-bottom-0">USER</th>
-                                <th class="wd-15p border-bottom-0">NAME</th>
-                                <th class="wd-15p border-bottom-0">CATEGORY</th>
-                                <th class="wd-15p border-bottom-0">BEDROOMS</th>
-                                <th class="wd-15p border-bottom-0">BATHROOMS</th>
-                                <th class="wd-15p border-bottom-0">LOCATION</th>
-                                <th class="wd-15p border-bottom-0">PRICE</th>
-                                <th class="wd-15p border-bottom-0">PROPERTY STATUS</th>
-                                <th class="wd-20p border-bottom-0">IMAGES</th>
+                                <th class="wd-15p border-bottom-0">title</th>
+                                <th class="wd-15p border-bottom-0">Year</th>
+                                  <th class="wd-15p border-bottom-0">Cover Art</th>
+                                <th class="wd-15p border-bottom-0">reports (pdf)</th>
                                 <th class="wd-15p border-bottom-0">DATE</th>
                                 <th>Actions</th>
                             </tr>
@@ -50,32 +45,35 @@
                             @foreach($reports as $report)
                             <tr>
                                 <td>{{$report->id}}</td>
-                                <td>{{$report->user->first_name}} {{$report->user->last_name}}</td>
-                                <td>{{$report->name}}</td>
-                                <td>{{$report->category->category_name}}</td>
-                                <td>{{$report->bedroom}} bedrooms</td>
-                                <td>{{$report->bathroom}} bathrooms</td>
-                                <td>{{$report->location}}</td>
-                                <td>{{$report->price}}</td>
-                                <td>{{$report->status}}</td>
-                                <td>
-                                    @foreach($report->images ?? [] as $image)
-                                    @if(is_string($image))
-                                    <img src="{{ asset('storage/' . $image)  }}" alt="Image" width="10" height='10'>
+                                <td>{{$report->title}}</td>
+                                <td>{{$report->year}}</td>
+                                 <td>@if(is_string($report->image))
+                                    <img src="{{ asset('storage/' . $report->image) }}" alt="Cover Pic"
+                                        class="img-fluid" style="max-width: 80%; max-height: 80%;">
                                     @endif
-                                    @endforeach
-
-
+                                </td>
+                                <td>
+                                    @if(is_array($report->report_url))
+                                    @if(count($report->report_url) > 0)
+                                    <a href="{{ asset($report->report_url[0]) }}" target="_blank">
+                                        View PDF
+                                    </a>
+                                    @else
+                                    No PDF available
+                                    @endif
+                                    @elseif($report->report_url)
+                                    <a href="{{ asset($report->report_url) }}" target="_blank">
+                                        <strong>View PDF</strong>
+                                    </a>
+                                    @else
+                                    No PDF available
+                                    @endif
                                 </td>
                                 <td>{{$report->created_at}}</td>
-                                <td>{{$report->comments_count}}</td>
                                 <td>
-                                    <a href="{{route('edit.reports', $report->id)}}" class="btn btn-light mr-2">Edit</a>
+                                   <a href="{{route('edit.reports', $report->id)}}" class="btn btn-light mr-2">Edit</a>
                                     <a href="{{route('confirm_delete.reports', $report->id)}}"
                                         class="btn btn-light">Delete</a>
-                                </td>
-                                <td><a href="{{route('show.reports', $report->id)}}" class="btn btn-light">View
-                                        Property</a>
                                 </td>
                             </tr>
                             @endforeach

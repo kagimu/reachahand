@@ -49,6 +49,20 @@
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
+                 <div class="form-group">
+                    <label for="details" class="form-label">Details about Person:</label>
+                    <input type="text" name="details" class="form-control" placeholder="">
+                    @error('details')
+                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="category" class="form-label">category about Person:</label>
+                    <input type="text" name="category" class="form-control" placeholder="">
+                    @error('category')
+                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-group">
                     <label for="email" class="form-label">Email:</label>
                     <input type="text" name="email" class="form-control" placeholder="">

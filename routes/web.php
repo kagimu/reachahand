@@ -9,6 +9,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/register', [UserController::class, 'registerClient'])->name('register.users');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('edit.users');
     Route::get('/users/show/{id}', [UserController::class, 'show'])->name('show.users');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('update.users');
     Route::get('/users/confirm-delete/{id}', [UserController::class, 'confirmDelete'])->name('confirm_delete.users');
     Route::get('/users/create', [UserController::class, 'create'])->name('create.users');
     Route::get('/users/activate/{id}', [UserController::class, 'activate'])->name('activate.user');
@@ -55,12 +57,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/confirm-delete/{id}', [PostController::class, 'confirmDelete'])->name('confirm_delete.posts');
     Route::delete('/posts/deletePost', [PostController::class, 'deletePost'])->name('deletePost.posts');
 
+    Route::get('/events', [EventsController::class, 'index'])->name('index.events');
+    Route::get('/events/create', [EventsController::class, 'create'])->name('create.events');
+    Route::post('/events/store', [EventsController::class, 'store'])->name('store.events');
+    Route::get('/events/{id}/edit', [EventsController::class, 'edit'])->name('edit.events');
+    Route::get('/events/show/{id}', [EventsController::class, 'show'])->name('show.events');
+    Route::put('/events/{post}', [EventsController::class, 'update'])->name('update.events');
+    Route::get('/events/confirm-delete/{id}', [EventsController::class, 'confirmDelete'])->name('confirm_delete.events');
+    Route::delete('/events/deletePost', [EventsController::class, 'deletePost'])->name('deletePost.events');
+
     Route::get('/impacts', [ImpactController::class, 'index'])->name('index.impacts');
     Route::get('/impacts/create', [ImpactController::class, 'create'])->name('create.impacts');
     Route::post('/impacts/store', [ImpactController::class, 'store'])->name('store.impacts');
     Route::get('/impacts/{id}/edit', [ImpactController::class, 'edit'])->name('edit.impacts');
     Route::get('/impacts/show/{id}', [ImpactController::class, 'show'])->name('show.impacts');
-    Route::put('/impacts/{post}', [ImpactController::class, 'update'])->name('update.impacts');
+    Route::put('/impacts/{impact}', [ImpactController::class, 'update'])->name('update.impacts');
     Route::get('/impacts/confirm-delete/{id}', [ImpactController::class, 'confirmDelete'])->name('confirm_delete.impacts');
     Route::delete('/impacts/deletePost', [ImpactController::class, 'deletePost'])->name('deletePost.impacts');
 
@@ -69,36 +80,36 @@ Route::middleware('auth')->group(function () {
     Route::post('/programs/store', [ProgramController::class, 'store'])->name('store.programs');
     Route::get('/programs/{id}/edit', [ProgramController::class, 'edit'])->name('edit.programs');
     Route::get('/programs/show/{id}', [ProgramController::class, 'show'])->name('show.programs');
-    Route::put('/programs/{post}', [ProgramController::class, 'update'])->name('update.programs');
+    Route::put('/programs/{program}', [ProgramController::class, 'update'])->name('update.programs');
     Route::get('/programs/confirm-delete/{id}', [ProgramController::class, 'confirmDelete'])->name('confirm_delete.programs');
-    Route::delete('/programs/deletePost', [ProgramController::class, 'deletePost'])->name('deletePost.programs');
+    Route::delete('/programs/deleteProgram', [ProgramController::class, 'deleteProgram'])->name('deleteProgram.programs');
 
     Route::get('/partners', [PartnerController::class, 'index'])->name('index.partners');
     Route::get('/partner/create', [PartnerController::class, 'create'])->name('create.partners');
-    Route::get('/partners/store', [PartnerController::class, 'store'])->name('store.partners');
+    Route::post('/partners/store', [PartnerController::class, 'store'])->name('store.partners');
     Route::get('/partners/{id}/edit', [PartnerController::class, 'edit'])->name('edit.partners');
     Route::get('/partners/show/{id}', [PartnerController::class, 'show'])->name('show.partners');
-    Route::put('/partners/{post}', [PartnerController::class, 'update'])->name('update.partners');
+    Route::put('/partners/{partner}', [PartnerController::class, 'update'])->name('update.partners');
     Route::get('/partners/confirm-delete/{id}', [PartnerController::class, 'confirmDelete'])->name('confirm_delete.partners');
     Route::delete('/partners/deletePost', [PartnerController::class, 'deletePost'])->name('deletePost.partners');
 
     Route::get('/reports', [ReportController::class, 'index'])->name('index.reports');
     Route::get('/reports/create', [ReportController::class, 'create'])->name('create.reports');
-    Route::get('/reports/store', [ReportController::class, 'store'])->name('store.reports');
+    Route::post('/reports/store', [ReportController::class, 'store'])->name('store.reports');
     Route::get('/reports/{id}/edit', [ReportController::class, 'edit'])->name('edit.reports');
     Route::get('/reports/show/{id}', [ReportController::class, 'show'])->name('show.reports');
-    Route::put('/reports/{post}', [ReportController::class, 'update'])->name('update.reports');
+    Route::put('/reports/{report}', [ReportController::class, 'update'])->name('update.reports');
     Route::get('/reports/confirm-delete/{id}', [ReportController::class, 'confirmDelete'])->name('confirm_delete.reports');
-    Route::delete('/reports/deletePost', [ReportController::class, 'deletePost'])->name('deletePost.reports');
+    Route::delete('/reports/deleteReport', [ReportController::class, 'deleteReport'])->name('deleteReport.reports');
 
     Route::get('/opportunities', [OpportunityController::class, 'index'])->name('index.opportunities');
     Route::get('/opportunities/create', [OpportunityController::class, 'create'])->name('create.opportunities');
-    Route::get('/opportunities/store', [OpportunityController::class, 'store'])->name('store.opportunities');
+    Route::post('/opportunities/store', [OpportunityController::class, 'store'])->name('store.opportunities');
     Route::get('/opportunities/{id}/edit', [OpportunityController::class, 'edit'])->name('edit.opportunities');
     Route::get('/opportunities/show/{id}', [OpportunityController::class, 'show'])->name('show.opportunities');
-    Route::put('/opportunities/{post}', [OpportunityController::class, 'update'])->name('update.opportunities');
+    Route::put('/opportunities/{opportunity}', [OpportunityController::class, 'update'])->name('update.opportunities');
     Route::get('/opportunities/confirm-delete/{id}', [OpportunityController::class, 'confirmDelete'])->name('confirm_delete.opportunities');
-    Route::delete('/opportunities/deletePost', [OpportunityController::class, 'deletePost'])->name('deletePost.opportunities');
+    Route::delete('/opportunities/delete', [OpportunityController::class, 'destroy'])->name('destroy.opportunities');
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/settings', [SettingsController::class, 'index'])->name('index.settings');

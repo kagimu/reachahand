@@ -32,15 +32,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th class="wd-15p border-bottom-0">USER</th>
-                                <th class="wd-15p border-bottom-0">NAME</th>
-                                <th class="wd-15p border-bottom-0">CATEGORY</th>
-                                <th class="wd-15p border-bottom-0">BEDROOMS</th>
-                                <th class="wd-15p border-bottom-0">BATHROOMS</th>
-                                <th class="wd-15p border-bottom-0">LOCATION</th>
-                                <th class="wd-15p border-bottom-0">PRICE</th>
-                                <th class="wd-15p border-bottom-0">PROPERTY STATUS</th>
-                                <th class="wd-20p border-bottom-0">IMAGES</th>
+                                <th class="wd-15p border-bottom-0">title</th>
+                                <th class="wd-15p border-bottom-0">Year</th>
+                                <th class="wd-15p border-bottom-0">reports(pdf)</th>
                                 <th class="wd-15p border-bottom-0">DATE</th>
                                 <th>Actions</th>
                             </tr>
@@ -49,32 +43,30 @@
                             <?php $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td><?php echo e($report->id); ?></td>
-                                <td><?php echo e($report->user->first_name); ?> <?php echo e($report->user->last_name); ?></td>
-                                <td><?php echo e($report->name); ?></td>
-                                <td><?php echo e($report->category->category_name); ?></td>
-                                <td><?php echo e($report->bedroom); ?> bedrooms</td>
-                                <td><?php echo e($report->bathroom); ?> bathrooms</td>
-                                <td><?php echo e($report->location); ?></td>
-                                <td><?php echo e($report->price); ?></td>
-                                <td><?php echo e($report->status); ?></td>
-                                <td>
-                                    <?php $__currentLoopData = $report->images ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <?php if(is_string($image)): ?>
-                                    <img src="<?php echo e(asset('storage/' . $image)); ?>" alt="Image" width="10" height='10'>
-                                    <?php endif; ?>
+                                <td><?php echo e($report->title); ?></td>
+                                <td><?php echo e($report->year); ?></td>
+                                <td><?php if(is_array($report->reports)): ?>
+                                    <?php $__currentLoopData = $report->reports_url; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $singleReport): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <a href="<?php echo e(asset($singleReport)); ?>" target="_blank">
+                                        View PDF
+                                    </a>
+                                    <br>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-
+                                    <?php elseif($report->reports_url): ?>
+                                    <a href="<?php echo e(asset($report->reports_url)); ?>" target="_blank">
+                                        View PDF
+                                    </a>
+                                    <?php else: ?>
+                                    No PDF available
+                                    <?php endif; ?>
                                 </td>
-                                <td><?php echo e($report->created_at); ?></td>
-                                <td><?php echo e($report->comments_count); ?></td>
+                                <td><?php echo e($report->created_at); ?></td>>
                                 <td>
-                                    <a href="<?php echo e(route('edit.reports', $report->id)); ?>" class="btn btn-light mr-2">Edit</a>
                                     <a href="<?php echo e(route('confirm_delete.reports', $report->id)); ?>"
                                         class="btn btn-light">Delete</a>
                                 </td>
                                 <td><a href="<?php echo e(route('show.reports', $report->id)); ?>" class="btn btn-light">View
-                                        Property</a>
+                                        Report</a>
                                 </td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

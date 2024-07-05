@@ -5,7 +5,7 @@
 <!--Page header-->
 <div class="page-header">
     <div class="page-leftheader">
-        <h4 class="page-title">{{session('title')}}</h4>
+        <h4 class="page-title">Details Page</h4>
     </div>
 </div>
 <!--End Page header-->
@@ -15,8 +15,8 @@
         <div class="col-lg-7">
             <div class="box-widget widget-user">
                 <div class="widget-user-image d-sm-flex">
-                    <img alt="avatar" class="rounded-circle border p-0" src="{{$user->profile_pic_url}}" height="70"
-                        width="70">
+                    <img alt="profile_pic" class="img-fluid" src="{{ asset('storage/' . $user->profile_pic) }}"
+                        style="max-width: 25%; max-height: 50%; border-radius:40px;">
                     <div class="ml-sm-4 mt-4">
                         <h4 class="pro-user-username mb-3 font-weight-bold">{{$user->name}} @if($user->role
                             == 'admin') <span class="badge badge-warning">Admin</span> @endif</h4>
@@ -43,6 +43,7 @@
                                 </path>
                             </svg>
                             <div class="h6 mb-0 ml-3 mt-1">Username: {{$user->username}}</div>
+                            
                         </div>
                     </div>
                 </div>
@@ -50,53 +51,112 @@
                 <div class="main-profile-bio mb-4">
                     {{$user->position}}
                 </div>
+                
+
 
 
             </div>
         </div>
         <div class="col-lg-5">
             <!-- Images -->
-            <h5 class="font-weight-bold">Images</h5>
+            <h5 class="font-weight-bold">Blog Images</h5>
             <div class="row">
-
-
-                <div class="col-6 p-6">
-                    <img src="{{ asset('storage/' . $user->profile_pic) }}" alt="Image" width="300" height="250"
-                        padding='20'>
+                <div class="col-md-12">
+                    <div class="row">
+                        @foreach ($user->posts as $post)
+                        @if (is_array($post->images))
+                        @foreach ($post->images as $image)
+                        <div class="col-md-6 mb-3">
+                            <img src="{{ asset('storage/' . $image) }}" alt="Image"
+                                style="max-width: 100%; max-height: 100%; border-radius:8px;">
+                        </div>
+                        @endforeach
+                        @elseif (is_string($post->images))
+                        <div class="col-md-6 mb-3">
+                            <img src="{{ asset('storage/' . $post->images) }}" alt="Image"
+                                style="max-width: 100%; max-height: 100%; border-radius:8px;">
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
                 </div>
+            </div>
 
-
+            <h5 class="font-weight-bold">Impact Images</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        @foreach ($user->impacts as $impact)
+                        @if (is_array($impact->images))
+                        @foreach ($impact->images as $image)
+                        <div class="col-md-6 mb-3">
+                            <img src="{{ asset('storage/' . $image) }}" alt="Image"
+                                style="max-width: 100%; max-height: 100%; border-radius:8px;"">
+                        </div>
+                        @endforeach
+                        @elseif (is_string($impact->images))
+                        <div class=" col-md-6 mb-3">
+                            <img src="{{ asset('storage/' . $impact->images) }}" alt="Image"
+                                style="max-width: 100%; max-height: 100%; border-radius:8px;">
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+                </div>
             </div>
 
             <!-- Videos -->
             <h5 class="font-weight-bold mt-4">Videos</h5>
             <div class="row">
-
-                @if (is_string($user->video))
-                <div class="col-6">
-                    <div class="embed-responsive embed-responsive-16by9 mb-3">
-                        <video class="embed-responsive-item" controls>
-                            <source class="embed-responsive-item" src="{{ asset('storage/' . $user->video) }}"
-                                allowfullscreen autoplay="0">
-                        </video>
-
+                <div class="col-md-12">
+                    <div class="row">
+                        @foreach ($user->posts as $post)
+                        @if (is_string($post->video))
+                        <div class="col-md-6 mb-3">
+                            <div class="embed-responsive embed-responsive-16by9 mb-3">
+                                <video class="embed-responsive-item" controls>
+                                    <source class="embed-responsive-item" src="{{ asset('storage/' . $video) }}"
+                                        allowfullscreen autoplay="0">
+                                </video>
+                            </div>
+                            @endif
+                            @endforeach
+                        </div>
                     </div>
+
+                    @if (is_string($user->video))
+                    <div class="col-6">
+                        <div class="embed-responsive embed-responsive-16by9 mb-3">
+                            <video class="embed-responsive-item" controls>
+                                <source class="embed-responsive-item" src="{{ asset('storage/' . $user->video) }}"
+                                    allowfullscreen autoplay="0">
+                            </video>
+
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
-                @endif
+                 <h5 class="font-weight-bold mt-4">Position</h5>
+                <div class="main-profile-bio mb-4">
+                    {{$user->details}}
+                </div>
+                 <h5 class="font-weight-bold mt-4">Category</h5>
+                <div class="main-profile-bio mb-4">
+                    {{$user->category}}
+                </div>
 
+                <a class="carousel-control-prev" href="#carousel-captions" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel-captions" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-
-            <a class="carousel-control-prev" href="#carousel-captions" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carousel-captions" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
         </div>
     </div>
-</div>
 
 </div>
 

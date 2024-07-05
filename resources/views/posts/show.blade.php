@@ -15,8 +15,8 @@
         <div class="col-lg-7">
             <div class="box-widget widget-user">
                 <div class="widget-user-image d-sm-flex">
-                    <img alt="avatar" class="rounded-circle border p-0" src="{{$post->user->profile_pic_url}}"
-                        height="70" width="70">
+                    <img src="{{ $post->user->profile_pic_url ? asset($post->user->profile_pic_url) : asset('images/placeholder.png') }}"
+                        alt="img" class="img-fluid" style="max-width: 25%; max-height: 50%; border-radius:40px;">
                     <div class="ml-sm-4 mt-4">
                         <h4 class="pro-user-username mb-3 font-weight-bold">{{$post->user->name}} @if($post->user->role
                             == 'admin') <span class="badge badge-warning">Admin</span> @endif</h4>
@@ -46,17 +46,17 @@
                         </div>
                     </div>
                 </div>
-                <h5 class="font-weight-bold mt-4">Blog Headline</h5>
+                <h5 class="font-weight-bold mt-4">BLOG TITLE</h5>
                 <div class="main-profile-bio mb-4">
                     {{$post->title}}
                 </div>
-                <h5 class="font-weight-bold mt-4">Description</h5>
+                <h5 class="font-weight-bold mt-4">DESCRIPTION</h5>
                 <div class="main-profile-bio mb-4">
-                    {{$post->desc}}
+                     {!! $post->desc !!}
                 </div>
-                <h5 class="font-weight-bold mt-4">Location</h5>
+                <h5 class="font-weight-bold mt-4">date</h5>
                 <div class="main-profile-bio mb-4">
-                    {{$post->location}}
+                    {{$post->date}}
                 </div>
                 <h5 class="font-weight-bold mt-4">HashTag</h5>
                 <div class="main-profile-bio mb-4">
@@ -72,26 +72,31 @@
             <!-- Images -->
             <h5 class="font-weight-bold">Post Images</h5>
             <div class="row">
-                @foreach($post->images as $image)
-                @if(is_string($image))
-                <div class="col-6 p-6">
-                    <img src="{{ asset('storage/' . $image) }}" alt="Image" width="500" height="200">
+                <div class="col-md-12">
+                    <div class="row">
+                       @if (!empty($post->images))
+                            @foreach($post->images as $image)
+                                @if(is_string($image))
+                                    <div class="col-md-6 mb-3">
+                                        <img src="{{ asset('storage/' . $image) }}" alt="Image" class="img-fluid" style="max-width: 100%; max-height: 100%; border-radius:8px;">
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endif
+
+                    </div>
                 </div>
-                @endif
-                @endforeach
             </div>
 
             <!-- Videos -->
-            <h5 class="font-weight-bold mt-4">Videos</h5>
+            <h5 class="font-weight-bold mt-4">Cover pic</h5>
             <div class="row">
 
-                @if (is_string($post->video))
+                @if (is_string($post->cover_pic_url))
                 <div class="col-6">
                     <div class="embed-responsive embed-responsive-16by9 mb-3">
-                        <video class="embed-responsive-item" controls>
-                            <source class="embed-responsive-item" src="{{ asset('storage/' . $post->video) }}"
-                                allowfullscreen autoplay="0">
-                        </video>
+                        <img src="{{ $post->cover_pic_url ? asset($post->cover_pic_url) : asset('images/placeholder.png') }}"
+                        alt="img" class="img-fluid" style="max-width: 25%; max-height: 50%; border-radius:40px;">
 
                     </div>
                 </div>

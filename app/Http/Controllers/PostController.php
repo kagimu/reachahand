@@ -8,7 +8,6 @@ use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Storage;
 
 class PostController extends Controller
 {
@@ -24,7 +23,7 @@ class PostController extends Controller
 
     public function index()
     {
-        session(['title' => 'Blogs & News']);
+        session(['title' => 'Blogs']);
         $posts = Post::withCount('comments')->orderBy('id', 'desc')->get();
 
         return view('posts.index', compact('posts'));
@@ -70,11 +69,7 @@ class PostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required',
-            'desc' => 'required',
-            'location' => 'required',
-            'owner' => 'required',
-            'images' => 'required|array',
-            'images.*' => 'required|image|mimes:pdf,jpeg,png,jpg,gif',
+           
         ]);
 
         try {
@@ -96,37 +91,17 @@ class PostController extends Controller
 
                 $post->title = $request->title;
                 $post->desc = $request->desc;
-                $post->location = $request->location;
+                $post->date = $request->date;
                 $post->tag = $request->tag;
-                $post->owner = $request->input('owner');
+                $post->owner = $request->owner;
                 $post->user_id = $user->id;
 
-                if ($request->hasFile('video')) {
-                    $videoFile = $request->file('video');
-                    $videoExt = $videoFile->getClientOriginalExtension();
-                    $videoName = time().'_'.$videoExt;
-                    $videoPath = $videoFile->storeAs('videos', $videoName, 'public');
-                    $post->video = $videoPath;
-                }
-
-                if ($request->hasFile('cover_pic')) {
+              if ($request->hasFile('cover_pic')) {
                     $imageFile = $request->file('cover_pic');
                     $imageExt = $imageFile->getClientOriginalExtension();
                     $imageName = time().'_'.$imageExt;
-                    $imagePath = $imageFile->storeAs('images/cover_pic', $imageName, 'public');
+                    $imagePath = $imageFile->storeAs('blogs/images/cover_pic', $imageName, 'public');
                     $post->cover_pic = $imagePath;
-                }
-
-                // upload labtest documents
-                if ($request->hasFile('images')) {
-                    $images = [];
-                    foreach ($request->file('images') as $index => $file) {
-                        $file_extension = $file->getClientOriginalExtension();
-                        $file_name = time().'_'.$index.'.'.$file_extension;
-                        $file_path = $file->storeAs('images/landlords', $file_name, 'public');
-                        array_push($images, $file_path);
-                    }
-                    $post->images = $images;
                 }
 
                 $post->save();
@@ -199,26 +174,34 @@ class PostController extends Controller
         $post->price = $request->price;
         $post->location = $request->location;
         $post->size = $request->size;
-        $post->status = $request->status;
-        $post->type = $request->type;
+        $post->author = $request->author;
+        $post->tag = $request->tag;
 
-        if ($request->hasFile('video')) {
-            $videoName = time().'.'.$request->video->extension();
-            $request->video->storeAs('public/videos', $videoName);
-            $post->video = url(Storage::url('videos/'.$videoName));
+        if ($request->hasFile('videos')) {
+            $imageFile = $request->file('videos');
+            $imageExt = $imageFile->getClientOriginalExtension();
+            $imageName = time().'_'.$imageExt;
+            $imagePath = $imageFile->storeAs('blogs/videos', $imageName, 'public');
+            $post->videos = $imagePath;
+        }
+        if ($request->hasFile('cover_pic')) {
+            $imageFile = $request->file('cover_pic');
+            $imageExt = $imageFile->getClientOriginalExtension();
+            $imageName = time().'_'.$imageExt;
+            $imagePath = $imageFile->storeAs('blogs/cover_pic', $imageName, 'public');
+            $post->cover_pic = $imagePath;
         }
 
-        if (is_array($request->file('images')) || is_object($request->file('images'))) {
-            $imageUrls = [];
-            foreach ($request->file('images') as $image) {
-                $imageName = time().'_'.$image->getClientOriginalName();
-                $image->storeAs('public/images', $imageName);
-                $url = Storage::url('images/'.$imageName);
-                array_push($imageUrls, $url);
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $index => $file) {
+                $file_extension = $file->getClientOriginalExtension();
+                $file_name = time().'_'.$index.'.'.$file_extension;
+                $file_path = $file->storeAs('images/blogs/images', $file_name, 'public');
+                array_push($images, $file_path);
             }
-            $post->images = $imageUrls;
+            $post->images = $images;
         }
-
         $post->save();
 
         return redirect()->route('index.posts')
@@ -267,9 +250,9 @@ class PostController extends Controller
         if ($post) {
             $post->delete();
 
-            return redirect()->route('posts.index')->with('success', 'Post has been deleted successfully');
+            return redirect()->route('index.posts')->with('success', 'Post has been deleted successfully');
         } else {
-            return redirect()->route('posts.index')->with('error', 'Post not found');
+            return redirect()->route('index.posts')->with('error', 'Post not found');
         }
 
     }

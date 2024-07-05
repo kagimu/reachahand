@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Program;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Storage;
 
 class ProgramController extends Controller
 {
@@ -27,67 +25,69 @@ class ProgramController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required',
-        'desc' => 'required',
-        'cover_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        // Add validation rules for other fields like logo if needed
-    ]);
+    {
+        $request->validate([
+            'title' => 'required',
+            'desc' => 'required',
+            'cover_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Add validation rules for other fields like logo if needed
+        ]);
 
-    try {
-        $program = new Program();
-        $program->title = $request->title;
-        $program->desc = $request->desc;
+        try {
+            $program = new Program();
+            $program->title = $request->title;
+            $program->desc = $request->desc;
 
-        if ($request->hasFile('cover_pic')) {
-            $imageName = time().'.'.$request->cover_pic->extension();
-            $request->cover_pic->storeAs('programs/coverPics', $imageName);
-            $program->cover_pic = url(Storage::url('coverPics/'.$imageName));
-        }
-
-        if ($request->hasFile('logo')) {
-            $imageName = time().'.'.$request->logo->extension();
-            $request->logo->storeAs('programs/logo', $imageName);
-            $program->logo = url(Storage::url('logo/'.$imageName));
-        }
-
-        if (is_array($request->file('gallery_images')) || is_object($request->file('gallery_images'))) {
-            $imageUrls = [];
-            foreach ($request->file('gallery_images') as $image) {
-                $imageName = time().'_'.$image->getClientOriginalName();
-                $image->storeAs('programs/gallery_images', $imageName);
-                $url = Storage::url('gallery_images/'.$imageName);
-                array_push($imageUrls, $url);
+            if ($request->hasFile('cover_pic')) {
+                $imageFile = $request->file('cover_pic');
+                $imageExt = $imageFile->getClientOriginalExtension();
+                $imageName = time().'_'.$imageExt;
+                $imagePath = $imageFile->storeAs('programs/cover_pic', $imageName, 'public');
+                $program->cover_pic = $imagePath;
             }
-            $program->gallery_images = $imageUrls;
-        }
 
-        $program->save();
+            if ($request->hasFile('logo')) {
+                $imageFile = $request->file('logo');
+                $imageExt = $imageFile->getClientOriginalExtension();
+                $imageName = time().'_'.$imageExt;
+                $imagePath = $imageFile->storeAs('programs/logo', $imageName, 'public');
+                $program->logo = $imagePath;
+            }
 
-        if ($request->ajax()) {
-            // Return JSON response with programs information
-            return response()->json([
-                'message' => 'Program has been created successfully',
-                'program' => $program,
-            ], 200);
-        } else {
-            // Redirect back with a success message
-            return redirect()->route('index.programs')->with('success', 'Program has been created successfully');
-        }
-    } catch (Exception $e) {
-        // Handle exceptions as needed...
+            if ($request->hasFile('gallery_images')) {
+                $gallery_images = [];
+                foreach ($request->file('gallery_images') as $index => $file) {
+                    $file_extension = $file->getClientOriginalExtension();
+                    $file_name = time().'_'.$index.'.'.$file_extension;
+                    $file_path = $file->storeAs('images/programs/gallery_images', $file_name, 'public');
+                    array_push($gallery_images, $file_path);
+                }
+                $program->gallery_images = $gallery_images;
+            }
+            $program->save();
 
-        // Check if the request is an AJAX request
-        if ($request->ajax()) {
-            return response()->json(['error' => 'An error occurred.'], 500);
-        } else {
-            // Redirect back with an error message
-            return redirect()->route('index.programs')->with('error', 'An error occurred.');
+            if ($request->ajax()) {
+                // Return JSON response with programs information
+                return response()->json([
+                    'message' => 'Program has been created successfully',
+                    'program' => $program,
+                ], 200);
+            } else {
+                // Redirect back with a success message
+                return redirect()->route('index.programs')->with('success', 'Program has been created successfully');
+            }
+        } catch (Exception $e) {
+            // Handle exceptions as needed...
+
+            // Check if the request is an AJAX request
+            if ($request->ajax()) {
+                return response()->json(['error' => 'An error occurred.'], 500);
+            } else {
+                // Redirect back with an error message
+                return redirect()->route('index.programs')->with('error', 'An error occurred.');
+            }
         }
     }
-}
-
 
     public function edit($id)
     {
@@ -95,24 +95,7 @@ class ProgramController extends Controller
 
         $program = Program::find($id);
 
-        return view('programs.create', compact('program'));
-    }
-
-    public function confirmDelete($id)
-    {
-        session(['title' => 'Confirm Delete']);
-        $program = Program::find($id);
-
-        return view('programs.confirm_delete', compact('program'));
-    }
-
-    public function delete(Request $request)
-    {
-        $program = Program::find($request->id);
-
-        $program->delete();
-
-        return redirect()->route('index.programs');
+        return view('programs.edit', compact('program'));
     }
 
     public function getPrograms()
@@ -146,38 +129,90 @@ class ProgramController extends Controller
 
     }
 
-  public function update(Request $request, $id)
-{
-    $request->validate([
-        'program_name' => 'required',
-        'phone' => 'required',
-        'cover_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        // Add validation rules for other fields like logo if needed
-    ]);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'program_name' => 'required',
+            'phone' => 'required',
+            'cover_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Add validation rules for other fields like logo if needed
+        ]);
 
-    $program = Program::find($id);
-    $program->program_name = is_null($request->program_name) ? $program->program_name : $request->program_name;
-    $program->phone = is_null($request->phone) ? $program->phone : $request->phone;
+        try {
+            $program = Program::find($id);
+            $program->title = $request->title;
+            $program->desc = $request->desc;
 
-    if ($image = $request->file('cover_pic')) {
-        $destinationPath = 'profile_pic/';
-        $profileImage = date('YmdHis').'.'.$image->getClientOriginalExtension();
-        $image->move($destinationPath, $profileImage);
-        $program['cover_pic'] = "$profileImage";
+            if ($request->hasFile('cover_pic')) {
+                $imageFile = $request->file('cover_pic');
+                $imageExt = $imageFile->getClientOriginalExtension();
+                $imageName = time().'_'.$imageExt;
+                $imagePath = $imageFile->storeAs('programs/cover_pic', $imageName, 'public');
+                $program->cover_pic = $imagePath;
+            }
+
+            if ($request->hasFile('logo')) {
+                $imageFile = $request->file('logo');
+                $imageExt = $imageFile->getClientOriginalExtension();
+                $imageName = time().'_'.$imageExt;
+                $imagePath = $imageFile->storeAs('programs/logo', $imageName, 'public');
+                $program->logo = $imagePath;
+            }
+
+            if ($request->hasFile('gallery_images')) {
+                $gallery_images = [];
+                foreach ($request->file('gallery_images') as $index => $file) {
+                    $file_extension = $file->getClientOriginalExtension();
+                    $file_name = time().'_'.$index.'.'.$file_extension;
+                    $file_path = $file->storeAs('images/programs/gallery_images', $file_name, 'public');
+                    array_push($gallery_images, $file_path);
+                }
+                $program->gallery_images = $gallery_images;
+            }
+            $program->save();
+
+            if ($request->ajax()) {
+                // Return JSON response with programs information
+                return response()->json([
+                    'message' => 'Program has been created successfully',
+                    'program' => $program,
+                ], 200);
+            } else {
+                // Redirect back with a success message
+                return redirect()->route('index.programs')->with('success', 'Program has been created successfully');
+            }
+        } catch (Exception $e) {
+            // Handle exceptions as needed...
+
+            // Check if the request is an AJAX request
+            if ($request->ajax()) {
+                return response()->json(['error' => 'An error occurred.'], 500);
+            } else {
+                // Redirect back with an error message
+                return redirect()->route('index.programs')->with('error', 'An error occurred.');
+            }
+        }
     }
 
-    $program->save();
-
-    return redirect()->route('programs.index')
-        ->with('success', 'Program Has Been updated successfully');
-}
-
-
-    public function destroy(program $program)
+    public function confirmDelete($id)
     {
-        $program->delete();
+        session(['title' => 'Confirm Delete']);
+        $program = Program::find($id);
 
-        return redirect()->route('programs.index')
-            ->with('success', 'Program has been deleted successfully');
+        return view('programs.confirm_delete', compact('program'));
+    }
+
+    public function deleteProgram(Request $request)
+    {
+        $program = Program::find($request->id);
+
+        if ($program) {
+            $program->delete();
+
+            return redirect()->route('index.programs')->with('success', 'Program has been deleted successfully');
+        } else {
+            return redirect()->route('index.programs')->with('error', 'Program not found');
+        }
+
     }
 }

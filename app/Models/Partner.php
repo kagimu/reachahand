@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Partner extends Model
 {
     use HasFactory;
-     protected $fillable = [
+
+    protected $fillable = [
         'partner_name',
         'partner_category',
         'cover_pic',
@@ -19,30 +20,32 @@ class Partner extends Model
 
     protected $casts = [
         'programs_supported_images' => 'array',
-        
+
     ];
 
-    protected $appends = ["cover_pic_url", "programs_supported_images_url"];
+    protected $appends = ['cover_pic_url', 'programs_supported_images_url'];
 
-     public function getCover_picUrlAttribute()
+    public function getCoverPicUrlAttribute()
     {
         if ($this->cover_pic) {
-            return url('storage/' . $this->cover_pic);
+            return url('storage/'.$this->cover_pic);
         }
+
         return null;
     }
 
-     public function getProgramsSupportedImagesAttribute()
+    public function getProgramsSupportedImagesUrlAttribute()
     {
         if ($this->programs_supported_images) {
             $imagesUrl = [];
-            foreach($this->programs_supported_images as $image){
-                $imageUrl = url('storage/' . $image);
+            foreach ($this->programs_supported_images as $image) {
+                $imageUrl = url('storage/'.$image);
                 array_push($imagesUrl, $imageUrl);
             }
+
             return $imagesUrl;
         }
+
         return null;
     }
-
 }
