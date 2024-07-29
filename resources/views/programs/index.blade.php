@@ -36,6 +36,7 @@
                                 <th class="wd-15p border-bottom-0">TITLE</th>
                                 <th class="wd-15p border-bottom-0">LOGO</th>
                                 <th class="wd-15p border-bottom-0">PROFILE_IMAGE</th>
+                                <th class="wd-15p border-bottom-0">CATEGORY</th>
                                 <th class="wd-20p border-bottom-0">IMAGES</th>
                                 <th class="wd-20p border-bottom-0">DATE CREATED</th>
                                 <th>Actions</th>
@@ -56,6 +57,7 @@
                                         class="img-fluid" style="max-width: 40%; max-height: 40%; border-radius:3px;">
                                     @endif
                                 </td>
+                                <td>{{$program->category}}</td>
                                 <td>
                                     @foreach($program->gallery_images ?? [] as $image)
                                     @if(is_string($image))

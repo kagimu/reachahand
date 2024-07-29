@@ -28,16 +28,23 @@
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group">
-                    <label for="partner_category" class="form-label">Category of Partner:</label>
-                    <input type="text" name="partner_category" class="form-control">
-                    @error('partner_category')
+               <div class="form-group">
+                    <label for="category" class="form-label">Category of Partner:</label>
+                    <select name="category" class="form-control">
+                        <option value="">Select a category</option>
+                        <option value="Implementing Partner">Implementing Partner</option>
+                        <option value="Implementing/Supporting Partner">Implementing/Supporting Partner</option>
+                        <option value="Strategic/Supporting Partner">Strategic/Supporting Partner</option>
+                        <option value="Corporate Partner">Corporate Partner</option>
+                    </select>
+                    @error('category')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group">
+
+               <div class="form-group">
                     <label for="desc" class="form-label">Description:</label>
-                    <textarea name="desc" rows="4" cols="30" class="form-control tinymce-editor" required></textarea>
+                    <textarea name="desc" rows="4" cols="30" id="textarea"></textarea>
                     @error('desc')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror

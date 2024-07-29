@@ -27,10 +27,25 @@
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="category" class="form-label">category of Program:</label>
+                    <input type="text" name="category" class="form-control" placeholder=""
+                        value="{{ old('category', $program->category) }}">
+                         <select name="category" class="form-control">
+                        <option value="{{ old('category', $program->category) }}">{{ old('category', $program->category) }}</option>
+                        <option value="SRHR">SRHR</option>
+                        <option value="Youth Livelihoods and Innovations">Youth Livelihoods and Innovations</option>
+                        <option value="SautiPlus Media Hub">SautiPlus Media Hub</option>
+                        <option value="IDEAS">IDEAS</option>
+                    </select>
+                    @error('category')
+                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                    @enderror
+                </div>
 
                 <div class="form-group">
                     <label for="desc" class="form-label">Brief Description of the Property:</label>
-                    <textarea name="desc" rows="4" cols="30" class="form-control tinymce-editor"
+                   <textarea name="desc" rows="4" cols="30" id="textarea"></textarea>
                         required>{{ old('desc', $program->desc) }}</textarea>
                     @error('desc')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>

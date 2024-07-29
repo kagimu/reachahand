@@ -37,10 +37,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th class="wd-15p border-bottom-0 card-title">Full name</th>
-                                <th class="wd-15p border-bottom-0 card-title">Login time</th>
-                                <th class="wd-20p border-bottom-0 card-title">Last seen</th>
-                                <th class="wd-25p border-bottom-0 card-title">Status</th>
-                                <th class="wd-25p border-bottom-0 card-title">Accurate Location</th>
                                 <th class="wd-10p border-bottom-0 card-title">Registered Date</th>
                                 <th class="wd-20p border-bottom-0 card-title ml-10"> Actions</th>
                             </tr>
@@ -50,19 +46,7 @@
                             <tr>
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->last_login}}</td>
-                                <td>{{ $user->last_activity }}</td>
-                                <td>
-                                    <span class="badge badge-{{ $user->online == 1 ? 'success' : 'danger' }} mt-2">
-                                        {{ $user->online == 1 ? 'online' : 'offline' }}
-                                    </span>
-                                </td>
-                                <td>
-
-                                    City: {{ $user->cityName }}<br>
-                                    Region: {{ $user->regionName }}<br>
-                                    Country: {{ $user->countryName }}
-                                </td>
+                               
                                 <td>{{ $user->created_at }}</td>
                                 <td>
                                     <a href="{{route('edit.users', $user->id)}}" class="btn btn-light mr-2">Edit</a>

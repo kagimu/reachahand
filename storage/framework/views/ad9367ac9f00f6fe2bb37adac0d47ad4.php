@@ -35,6 +35,7 @@
                                 <th class="wd-15p border-bottom-0">TITLE</th>
                                 <th class="wd-15p border-bottom-0">LOGO</th>
                                 <th class="wd-15p border-bottom-0">PROFILE_IMAGE</th>
+                                <th class="wd-15p border-bottom-0">CATEGORY</th>
                                 <th class="wd-20p border-bottom-0">IMAGES</th>
                                 <th class="wd-20p border-bottom-0">DATE CREATED</th>
                                 <th>Actions</th>
@@ -55,6 +56,7 @@
                                         class="img-fluid" style="max-width: 40%; max-height: 40%; border-radius:3px;">
                                     <?php endif; ?>
                                 </td>
+                                <td><?php echo e($program->category); ?></td>
                                 <td>
                                     <?php $__currentLoopData = $program->gallery_images ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <?php if(is_string($image)): ?>

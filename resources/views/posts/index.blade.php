@@ -33,10 +33,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th class="wd-15p border-bottom-0">Author</th>
+                                <th class="wd-15p border-bottom-0">POSTED BY</th>
                                 <th class="wd-15p border-bottom-0">TITLE</th>
                                 <th class="wd-15p border-bottom-0">TAG</th>
-                                <th class="wd-15p border-bottom-0">OWNER</th>
+                                <th class="wd-15p border-bottom-0">AUTHOR</th>
                                 <th class="wd-15p border-bottom-0">date written</th>
                                 <th class="wd-20p border-bottom-0">IMAGES</th>
                                 <th class="wd-15p border-bottom-0">post uploaded on</th>
@@ -48,7 +48,7 @@
                             <tr>
                                 <td>{{$post->id}}</td>
                                 <td>{{$post->user->name}}</td>
-                                <td>{{$post->title}}</td>
+                                <td>{{ Str::limit($post->title, 20) }}</td>
                                 <td>{{$post->tag}}</td>
                                 <td>{{$post->owner}}</td>
                                 <td>{{$post->date}}</td>

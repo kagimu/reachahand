@@ -28,7 +28,7 @@ class ProgramController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'desc' => 'required',
+            'category' => 'required',
             'cover_pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // Add validation rules for other fields like logo if needed
         ]);
@@ -37,6 +37,7 @@ class ProgramController extends Controller
             $program = new Program();
             $program->title = $request->title;
             $program->desc = $request->desc;
+            $program->category = $request->category;
 
             if ($request->hasFile('cover_pic')) {
                 $imageFile = $request->file('cover_pic');
@@ -142,6 +143,7 @@ class ProgramController extends Controller
             $program = Program::find($id);
             $program->title = $request->title;
             $program->desc = $request->desc;
+            $program->category = $request->category;
 
             if ($request->hasFile('cover_pic')) {
                 $imageFile = $request->file('cover_pic');

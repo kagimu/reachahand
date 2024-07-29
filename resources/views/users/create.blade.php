@@ -56,9 +56,14 @@
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group">
-                    <label for="category" class="form-label">category about Person:</label>
-                    <input type="text" name="category" class="form-control" placeholder="">
+               <div class="form-group">
+                    <label for="category" class="form-label">Category about Person:</label>
+                    <select name="category" class="form-control">
+                        <option value="">Select a category</option>
+                        <option value="Director">Director</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Officer">Officer</option>
+                    </select>
                     @error('category')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
@@ -69,18 +74,6 @@
                     @error('email')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="password" class="form-label"> Password:</label>
-                    <input type="password" name="password" class="form-control" placeholder="******">
-                    @error('password')
-                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="password_confirmation" class="form-label">Confirm Password:</label>
-                    <input type="password" name="password_confirmation" class="form-control" placeholder="******">
                 </div>
                 <div class="col-md-10">
                     <label for='profile_pic' class="form-label">Select Profile Picture:</label>

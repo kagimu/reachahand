@@ -28,9 +28,22 @@
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
                 </div>
+               <div class="form-group">
+                    <label for="category" class="form-label">Category of Program:</label>
+                    <select name="category" class="form-control">
+                        <option value="">Select a category</option>
+                        <option value="SRHR">SRHR</option>
+                        <option value="Youth Livelihoods and Innovations">Youth Livelihoods and Innovations</option>
+                        <option value="SautiPlus Media Hub">SautiPlus Media Hub</option>
+                        <option value="IDEAS">IDEAS</option>
+                    </select>
+                    @error('category')
+                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-group">
-                    <label for="desc" class="form-label"> Description of the Program:</label>
-                    <textarea name="desc" rows="4" cols="30" class="form-control tinymce-editor" required></textarea>
+                    <label for="desc" class="form-label">Description:</label>
+                    <textarea name="desc" rows="4" cols="30" id="textarea"></textarea>
                     @error('desc')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror

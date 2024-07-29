@@ -18,7 +18,7 @@
                 <a href="{{route('index.posts')}}"></a>
                 <div class="d-flex no-block align-items-center">
                     <div>
-                        <h6 class="text-white">Blog Posts</h6>
+                        <h6 class="text-white">Blogs</h6>
                         <h2 class="text-white m-0 font-weight-bold">{{$posts}}</h2>
                     </div>
                     <div class="ml-auto">
@@ -34,7 +34,7 @@
             <div class="card-body">
                 <div class="d-flex no-block align-items-center">
                     <div>
-                        <h6 class="text-white">Users</h6>
+                        <h6 class="text-white">Registered Staff</h6>
                         <h2 class="text-white m-0 font-weight-bold">{{$clients}}</h2>
                     </div>
                     <div class="ml-auto">
@@ -49,8 +49,8 @@
             <div class="card-body">
                 <div class="d-flex no-block align-items-center">
                     <div>
-                        <h6 class="text-white">Impact Posts</h6>
-                        <h2 class="text-white m-0 font-weight-bold">{{$impacts}}</h2>
+                        <h6 class="text-white">Events</h6>
+                        <h2 class="text-white m-0 font-weight-bold">{{$events}}</h2>
                     </div>
                     <div class="ml-auto">
                         <span class="text-white display-6"><i class="fa fa-server fa-2x"></i></span>
@@ -92,8 +92,6 @@
                                         <th class="wd-lg-10p">NAME</th>
                                         <th class="wd-lg-10p">Surname</th>
                                         <th class="wd-lg-10p">Posts Uploaded</th>
-                                        <th class="wd-lg-10p">Impacts Uploaded</th>
-                                        <th class="wd-lg-10p">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -103,15 +101,6 @@
                                         <td>{{$user->username}}</td>
                                         <td>
                                             {{number_format($user->posts->count())}} posts
-                                        </td>
-                                        <td>
-                                            {{number_format($user->impacts->count())}} impacts
-                                        </td>
-                                        <td>
-                                            <span
-                                                class="badge badge-{{ $user->online == 1 ? 'success' : 'danger' }} mt-2">
-                                                {{ $user->online == 1 ? 'online' : 'offline' }}
-                                            </span>
                                         </td>
                                     </tr>
                                     @endforeach

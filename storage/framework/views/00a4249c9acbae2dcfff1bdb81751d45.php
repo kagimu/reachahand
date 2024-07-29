@@ -36,10 +36,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th class="wd-15p border-bottom-0 card-title">Full name</th>
-                                <th class="wd-15p border-bottom-0 card-title">Login time</th>
-                                <th class="wd-20p border-bottom-0 card-title">Last seen</th>
-                                <th class="wd-25p border-bottom-0 card-title">Status</th>
-                                <th class="wd-25p border-bottom-0 card-title">Accurate Location</th>
                                 <th class="wd-10p border-bottom-0 card-title">Registered Date</th>
                                 <th class="wd-20p border-bottom-0 card-title ml-10"> Actions</th>
                             </tr>
@@ -49,21 +45,7 @@
                             <tr>
                                 <td><?php echo e($user->id); ?></td>
                                 <td><?php echo e($user->name); ?></td>
-                                <td><?php echo e($user->last_login); ?></td>
-                                <td><?php echo e($user->last_activity); ?></td>
-                                <td>
-                                    <span class="badge badge-<?php echo e($user->online == 1 ? 'success' : 'danger'); ?> mt-2">
-                                        <?php echo e($user->online == 1 ? 'online' : 'offline'); ?>
-
-                                    </span>
-                                </td>
-                                <td>
-
-                                    City: <?php echo e($user->cityName); ?><br>
-                                    Region: <?php echo e($user->regionName); ?><br>
-                                    Country: <?php echo e($user->countryName); ?>
-
-                                </td>
+                               
                                 <td><?php echo e($user->created_at); ?></td>
                                 <td>
                                     <a href="<?php echo e(route('edit.users', $user->id)); ?>" class="btn btn-light mr-2">Edit</a>
